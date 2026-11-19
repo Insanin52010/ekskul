@@ -746,7 +746,12 @@ function renderSiswaPanel() {
             <td><strong>${eks.nama}</strong></td>
             <td>${eks.jadwal}</td>
             <td><span class="badge ${p.status}">${p.status.toUpperCase()}</span></td>
-            <td><button type="button" class="btn" style="padding:5px 12px; font-size:12px;" onclick="bukaModalEkskul(${eks.id})">Detail</button></td>
+            <td>
+                <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                    <button type="button" class="btn" style="padding:5px 12px; font-size:12px;" onclick="bukaModalEkskul(${eks.id})">Detail</button>
+                    ${p.status === 'pending' ? `<button type="button" class="btn btn-del" style="padding:5px 12px; font-size:12px;" onclick="siswaBatalkanPendaftaran(${eks.id})">✕ Batalkan</button>` : ''}
+                </div>
+            </td>
         </tr>`;
     });
     tbl.innerHTML = html;
@@ -767,6 +772,30 @@ function siswaDaftarEkskul(ekskulId) {
 
     document.getElementById('modalDetail').style.display = 'none';
     showAlert('appAlert', `🎉 Pendaftaran ke <b>${eks.nama}</b> berhasil dikirim! Menunggu konfirmasi.`);
+    renderDashboard();
+}
+
+function siswaBatalkanPendaftaran(ekskulId) {
+    const idx = pendaftarans.findIndex(p => p.siswa_id === currentUser.id && p.ekskul_id === ekskulId);
+    if (idx === -1) return;
+
+    const eks = ekskuls.find(e => e.id === ekskulId);
+    if (!confirm(`Apakah kamu yakin ingin membatalkan pendaftaran ekstrakurikuler ${eks ? eks.nama : ''}?`)) return;
+
+    pendaftarans.splice(idx, 1);
+    setStore('vohisma_pendaftarans', pendaftarans);
+
+    if (eks) {
+        users.filter(u => u.role === 'admin').forEach(adm => {
+            addNotif(adm.id, `Siswa ${currentUser.nama} (${currentUser.kelas}) membatalkan pendaftaran di ekskul ${eks.nama}.`);
+        });
+        if (eks.pelatih_id) {
+            addNotif(eks.pelatih_id, `Siswa ${currentUser.nama} (${currentUser.kelas}) membatalkan pendaftaran di ekskul ${eks.nama}.`);
+        }
+    }
+
+    document.getElementById('modalDetail').style.display = 'none';
+    showAlert('appAlert', `🗑️ Pendaftaran ekstrakurikuler <b>${eks ? eks.nama : ''}</b> berhasil dibatalkan.`, 'danger');
     renderDashboard();
 }
 
@@ -1046,6 +1075,11 @@ function bukaModalEkskul(eid) {
             const p = pendaftarans.find(x => x.siswa_id === currentUser.id && x.ekskul_id === e.id);
             if (!p) {
                 actionBtn = `<button type="button" class="btn btn-daftar btn-block" onclick="siswaDaftarEkskul(${e.id})">✨ Daftar Ekskul Ini Sekarang</button>`;
+            } else if (p.status === 'pending') {
+                actionBtn = `
+                    <div class="alert alert-success" style="text-align:center; margin-bottom:10px;">Status Pendaftaran Kamu: <b>PENDING</b> (Menunggu Konfirmasi)</div>
+                    <button type="button" class="btn btn-del btn-block" onclick="siswaBatalkanPendaftaran(${e.id})">✕ Batalkan Pendaftaran Ekskul Ini</button>
+                `;
             } else {
                 actionBtn = `<div class="alert alert-success" style="text-align:center; margin:0;">Status Pendaftaran Kamu: <b>${p.status.toUpperCase()}</b></div>`;
             }
