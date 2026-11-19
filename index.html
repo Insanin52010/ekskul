@@ -7,22 +7,22 @@
     <link rel="icon" type="image/jpeg" href="assets/img/vohisma.jpg">
     <link rel="stylesheet" href="assets/style.css">
     <style>
-        /* Base / Background Tema Estetik */
+        /* Base / Background Tema Nuansa Hijau Estetik */
         body {
-            background: linear-gradient(135deg, #f0f4ff 0%, #fdf2f8 50%, #f0fdf4 100%);
+            background: linear-gradient(135deg, #ecfdf5 0%, #f0fdf4 50%, #f7fee7 100%);
             background-attachment: fixed;
             position: relative;
             overflow-x: hidden;
         }
 
-        /* Latar belakang grid tipis ala blueprint */
+        /* Latar belakang grid tipis bernuansa hijau */
         body::before {
             content: "";
             position: fixed;
             inset: 0;
             background-image: 
-                linear-gradient(to right, rgba(99, 102, 241, 0.04) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(99, 102, 241, 0.04) 1px, transparent 1px);
+                linear-gradient(to right, rgba(16, 185, 129, 0.04) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(16, 185, 129, 0.04) 1px, transparent 1px);
             background-size: 30px 30px;
             z-index: -1;
             pointer-events: none;
@@ -39,7 +39,6 @@
             z-index: 999;
         }
 
-        /* Sembunyikan canvas animasi di HP untuk menghindari lag */
         @media (max-width: 768px) {
             #cursorCanvas {
                 display: none !important;
@@ -60,7 +59,7 @@
             background: rgba(255, 255, 255, 0.92);
             backdrop-filter: blur(16px);
             border-radius: 28px;
-            box-shadow: 0 25px 60px rgba(79, 70, 229, 0.15);
+            box-shadow: 0 25px 60px rgba(16, 185, 129, 0.15);
             border: 1px solid rgba(255, 255, 255, 0.9);
             max-width: 470px;
             width: 100%;
@@ -75,7 +74,7 @@
             height: 72px;
             border-radius: 50%;
             object-fit: cover;
-            border: 3px solid #c7d2fe;
+            border: 3px solid #a7f3d0;
             margin-bottom: 10px;
         }
         .auth-tabs {
@@ -99,7 +98,7 @@
             transition: all 0.2s;
         }
         .auth-tab-btn.active {
-            background: #4f46e5;
+            background: #059669;
             color: #fff;
         }
         .pass-wrapper {
@@ -128,16 +127,16 @@
             height: auto !important;
         }
         .toggle-eye-btn:hover {
-            color: #4f46e5;
+            color: #059669;
         }
         .demo-accounts-box {
-            background: #f8fafc;
-            border: 1.5px dashed #cbd5e1;
+            background: #f0fdf4;
+            border: 1.5px dashed #a7f3d0;
             border-radius: 16px;
             padding: 12px 14px;
             margin-top: 16px;
             font-size: 12px;
-            color: #475569;
+            color: #065f46;
         }
         .demo-accounts-box button {
             padding: 5px 12px;
@@ -164,7 +163,7 @@
         }
         .ekskul-item-card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 16px 36px rgba(79, 70, 229, 0.14);
+            box-shadow: 0 16px 36px rgba(5, 150, 105, 0.14);
         }
         .ekskul-item-card img {
             width: 100%;
@@ -214,7 +213,7 @@
         }
         .info-row-modal strong {
             display: block;
-            color: #4f46e5;
+            color: #059669;
             font-size: 11.5px;
             margin-bottom: 2px;
         }
@@ -238,7 +237,7 @@
             margin-left: 4px;
         }
         .preview-banner {
-            background: linear-gradient(135deg, #f59e0b, #d97706);
+            background: linear-gradient(135deg, #059669, #047857);
             color: #fff;
             padding: 12px 18px;
             border-radius: 16px;
@@ -273,7 +272,7 @@
         <div class="auth-card">
             <div class="auth-header">
                 <img src="assets/img/vohisma.jpg" alt="Logo SMKN 5 Malang">
-                <h2 style="margin: 0; border: none; padding: 0; font-size: 21px; color: #0f172a;">EKSTRAKURIKULER</h2>
+                <h2 style="margin: 0; border: none; padding: 0; font-size: 21px; color: #065f46;">EKSTRAKURIKULER</h2>
                 <p class="text-muted" style="font-size: 13px; margin-top: 4px;">SMK Negeri 5 Malang (Vohisma)</p>
             </div>
 
@@ -300,15 +299,15 @@
                     </div>
                 </div>
                 <div style="text-align: right; margin-bottom: 14px;">
-                    <a href="javascript:void(0)" onclick="switchAuthTab('forgot')" style="font-size: 12.5px; color: #4f46e5; font-weight: 600; text-decoration: none;">Lupa Password?</a>
+                    <a href="javascript:void(0)" onclick="switchAuthTab('forgot')" style="font-size: 12.5px; color: #059669; font-weight: 600; text-decoration: none;">Lupa Password?</a>
                 </div>
-                <button type="submit" class="btn btn-block">Masuk Sekarang</button>
+                <button type="submit" class="btn btn-block" style="background: #059669;">Masuk Sekarang</button>
 
                 <div class="demo-accounts-box">
-                    <div style="font-weight: 700; margin-bottom: 6px; color: #1e293b;">⚡ Akses Cepat Akun:</div>
-                    <button type="button" class="btn" onclick="quickLogin('admin', '123456')">🛡️ Admin</button>
-                    <button type="button" class="btn btn-daftar" onclick="quickLogin('14699/1801.063', '12345')">🎓 Siswa</button>
-                    <button type="button" style="background:#eab308; color:#422006;" onclick="quickLogin('2001', '12345')">⚡ Pelatih</button>
+                    <div style="font-weight: 700; margin-bottom: 6px; color: #065f46;">⚡ Akses Cepat Akun:</div>
+                    <button type="button" class="btn" style="background:#059669;" onclick="quickLogin('admin', '123456')">🛡️ Admin</button>
+                    <button type="button" class="btn btn-daftar" style="background:#10b981;" onclick="quickLogin('14699/1801.063', '12345')">🎓 Siswa</button>
+                    <button type="button" style="background:#047857; color:#fff;" onclick="quickLogin('2001', '12345')">⚡ Pelatih</button>
                 </div>
             </form>
 
@@ -341,23 +340,15 @@
                             <option value="X RPL 1">X RPL 1</option>
                             <option value="X RPL 2">X RPL 2</option>
                             <option value="X TKJ 1">X TKJ 1</option>
-                            <option value="X TKJ 2">X TKJ 2</option>
-                            <option value="X DKV 1">X DKV 1</option>
-                            <option value="X DKV 2">X DKV 2</option>
                         </optgroup>
                         <optgroup label="Kelas XI">
                             <option value="XI RPL 1">XI RPL 1</option>
                             <option value="XI RPL 2">XI RPL 2</option>
                             <option value="XI TKJ 1">XI TKJ 1</option>
-                            <option value="XI TKJ 2">XI TKJ 2</option>
-                            <option value="XI DKV 1">XI DKV 1</option>
-                            <option value="XI DKV 2">XI DKV 2</option>
                         </optgroup>
                         <optgroup label="Kelas XII">
                             <option value="XII RPL 1">XII RPL 1</option>
                             <option value="XII RPL 2">XII RPL 2</option>
-                            <option value="XII TKJ 1">XII TKJ 1</option>
-                            <option value="XII TKJ 2">XII TKJ 2</option>
                         </optgroup>
                     </select>
                 </div>
@@ -396,7 +387,7 @@
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-daftar btn-block">✨ Buat Akun & Masuk</button>
+                <button type="submit" class="btn btn-daftar btn-block" style="background: #059669;">✨ Buat Akun & Masuk</button>
             </form>
 
             <!-- FORM LUPA PASSWORD -->
@@ -415,16 +406,16 @@
                         </button>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-block">🔄 Simpan Password Baru</button>
+                <button type="submit" class="btn btn-block" style="background: #059669;">🔄 Simpan Password Baru</button>
                 <button type="button" class="btn btn-kembali btn-block" style="margin-top: 8px;" onclick="switchAuthTab('login')">← Kembali ke Login</button>
             </form>
         </div>
     </div>
 </div>
 
-<!-- ==================== HALAMAN 2: DASHBOARD UTAMA (SISWA / PELATIH / ADMIN) ==================== -->
+<!-- ==================== HALAMAN 2: DASHBOARD UTAMA ==================== -->
 <div id="secApp" class="page-section">
-    <div class="navbar" id="mainNavbar">
+    <div class="navbar" id="mainNavbar" style="background: #065f46; color: #fff;">
         <div class="nav-brand">
             <img src="assets/img/vohisma.jpg" alt="Logo SMKN 5 Malang" class="nav-school-logo">
             <span class="nav-logo">SMKN 5 MALANG</span>
@@ -432,16 +423,16 @@
         </div>
         <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
             <div id="adminPreviewBtns" style="display: none; gap: 6px;">
-                <button type="button" onclick="setPreviewMode('siswa')" style="background: linear-gradient(135deg, #60a5fa, #8b5cf6); color:#fff; border:none; border-radius:50px; padding: 7px 13px; font-size: 12px; cursor:pointer;">👀 Pratinjau Siswa</button>
-                <button type="button" onclick="setPreviewMode('pelatih')" style="background: linear-gradient(135deg, #fde047, #facc15); color: #422006; border:none; border-radius:50px; padding: 7px 13px; font-size: 12px; cursor:pointer;">👀 Pratinjau Pelatih</button>
+                <button type="button" onclick="setPreviewMode('siswa')" style="background: #10b981; color:#fff; border:none; border-radius:50px; padding: 7px 13px; font-size: 12px; cursor:pointer;">👀 Pratinjau Siswa</button>
+                <button type="button" onclick="setPreviewMode('pelatih')" style="background: #fde047; color: #422006; border:none; border-radius:50px; padding: 7px 13px; font-size: 12px; cursor:pointer;">👀 Pratinjau Pelatih</button>
             </div>
-            <span id="navUserName" style="font-size: 13px; font-weight: 700; color: #1e293b; margin-right: 4px;"></span>
+            <span id="navUserName" style="font-size: 13px; font-weight: 700; color: #fff; margin-right: 4px;"></span>
             <button type="button" class="notif-badge-btn" onclick="bukaNotifModal()">🔔 Notifikasi <span class="notif-count" id="notifCountBadge">0</span></button>
-            <button type="button" class="btn-logout" onclick="logoutUser()" style="padding: 8px 16px; border-radius: 50px;">Keluar</button>
+            <button type="button" class="btn-logout" onclick="logoutUser()" style="padding: 8px 16px; border-radius: 50px; background: #ef4444; color: #fff; border: none; cursor: pointer;">Keluar</button>
         </div>
     </div>
 
-    <div class="container">
+    <div class="container" style="padding-top: 24px;">
         <div id="previewBannerArea"></div>
         <div id="appAlert"></div>
 
@@ -450,10 +441,10 @@
             <div class="admin-stats-grid" id="adminStatsGrid"></div>
 
             <!-- Pengajuan Pelatih -->
-            <div class="card-box" id="boxPengajuanPelatih" style="display: none; border: 2px solid #fde047; background: #fffbeb;">
-                <h2 style="color: #92400e;">⏳ Pengajuan Tugas Melatih Ekstrakurikuler</h2>
+            <div class="card-box" id="boxPengajuanPelatih" style="display: none; border: 2px solid #a7f3d0; background: #f0fdf4;">
+                <h2 style="color: #065f46;">⏳ Pengajuan Tugas Melatih Ekstrakurikuler</h2>
                 <div style="overflow-x: auto;">
-                    <table id="tblPengajuanPelatih"></table>
+                    <table id="tblPengajuanPelatih" style="width: 100%; border-collapse: collapse;"></table>
                 </div>
             </div>
 
@@ -461,15 +452,15 @@
             <div class="card-box">
                 <h2>📋 Kelola Pendaftaran Siswa ke Ekskul</h2>
                 <div style="overflow-x: auto;">
-                    <table id="tblAdminPendaftar"></table>
+                    <table id="tblAdminPendaftar" style="width: 100%; border-collapse: collapse;"></table>
                 </div>
             </div>
 
-            <!-- Kelola Akun Pengguna -->
+            <!-- Kelola Akun Pengguna (Bisa Lihat Password) -->
             <div class="card-box">
-                <h2>👥 Kelola Pengguna Terdaftar</h2>
+                <h2>👥 Kelola Pengguna Terdaftar (Lihat Password)</h2>
                 <div style="overflow-x: auto;">
-                    <table id="tblAdminUsers"></table>
+                    <table id="tblAdminUsers" style="width: 100%; border-collapse: collapse;"></table>
                 </div>
             </div>
 
@@ -477,22 +468,22 @@
             <div class="card-box">
                 <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
                     <h2 style="margin: 0; border: none; padding: 0;">🎯 Kelola Data Ekstrakurikuler</h2>
-                    <button type="button" class="btn btn-daftar" onclick="toggleTambahEkskulForm()">+ Tambah Ekskul Baru</button>
+                    <button type="button" class="btn btn-daftar" style="background: #059669;" onclick="toggleTambahEkskulForm()">+ Tambah Ekskul Baru</button>
                 </div>
 
-                <form id="formTambahEkskulAdmin" onsubmit="adminTambahEkskul(event)" style="display: none; background: #f8fafc; border: 2px dashed #c4b5fd; padding: 18px; border-radius: 18px; margin-top: 16px;">
+                <form id="formTambahEkskulAdmin" onsubmit="adminTambahEkskul(event)" style="display: none; background: #f0fdf4; border: 2px dashed #34d399; padding: 18px; border-radius: 18px; margin-top: 16px;">
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px;">
                         <div class="form-group"><label>Nama Ekskul</label><input type="text" id="newEksNama" required></div>
                         <div class="form-group"><label>Nama Pembina / Pelatih</label><input type="text" id="newEksPembina" placeholder="Belum diatur"></div>
                         <div class="form-group"><label>Jadwal & Lokasi</label><input type="text" id="newEksJadwal" required></div>
-                        <div class="form-group"><label>📞 Kontak Pengurus Ekskul</label><input type="text" id="newEksKontak" placeholder="0812-xxxx-xxxx (Ketua Ekskul)"></div>
+                        <div class="form-group"><label>📞 Kontak Pengurus Ekskul</label><input type="text" id="newEksKontak" placeholder="0812-xxxx-xxxx"></div>
                     </div>
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
                         <div class="form-group"><label>Deskripsi</label><textarea id="newEksDesk" rows="2" required></textarea></div>
                         <div class="form-group"><label>Perlengkapan Dibawa</label><textarea id="newEksPerlengkapan" rows="2"></textarea></div>
                     </div>
                     <div class="form-group"><label>🏆 Prestasi</label><textarea id="newEksPrestasi" rows="2" placeholder="Daftar prestasi ekstrakurikuler..."></textarea></div>
-                    <button type="submit" class="btn">✓ Simpan Ekskul Baru</button>
+                    <button type="submit" class="btn" style="background: #059669;">✓ Simpan Ekskul Baru</button>
                 </form>
             </div>
         </div>
@@ -503,7 +494,7 @@
             <div class="card-box">
                 <h2>📋 Konfirmasi Pendaftaran Siswa di Ekskul Binaan</h2>
                 <div style="overflow-x: auto;">
-                    <table id="tblPelatihPendaftar"></table>
+                    <table id="tblPelatihPendaftar" style="width: 100%; border-collapse: collapse;"></table>
                 </div>
             </div>
         </div>
@@ -513,7 +504,7 @@
             <div class="card-box">
                 <h2>📌 Status Ekstrakurikuler Saya</h2>
                 <div style="overflow-x: auto;">
-                    <table id="tblSiswaStatus"></table>
+                    <table id="tblSiswaStatus" style="width: 100%; border-collapse: collapse;"></table>
                 </div>
             </div>
         </div>
@@ -548,7 +539,7 @@
             <button type="button" onclick="hapusSemuaNotif()" style="background: #fee2e2; color: #b91c1c; font-size: 11.5px; padding: 5px 12px; border-radius: 50px; box-shadow: none; border:none; cursor:pointer;">Bersihkan</button>
         </div>
         <div id="notifListContent" style="max-height: 300px; overflow-y: auto;"></div>
-        <button type="button" class="btn btn-kembali btn-block" style="margin-top: 14px;" onclick="document.getElementById('modalNotif').style.display='none'">Tutup</button>
+        <button type="button" class="btn btn-kembali btn-block" style="margin-top: 14px; background: #64748b; color: #fff;" onclick="document.getElementById('modalNotif').style.display='none'">Tutup</button>
     </div>
 </div>
 
@@ -578,7 +569,7 @@ window.addEventListener('mousemove', (e) => {
             size: Math.random() * 4 + 1,
             speedX: (Math.random() - 0.5) * 2,
             speedY: (Math.random() - 0.5) * 2,
-            color: `hsl(${Math.random() * 60 + 200}, 80%, 65%)`,
+            color: `hsl(${Math.random() * 40 + 130}, 80%, 55%)`,
             life: 1
         });
     }
@@ -633,27 +624,9 @@ const DEFAULT_USERS = [
 ];
 
 const DEFAULT_EKSKUL = [
-    { id: 1, nama: "PRAMUKA", pembina: "Abdul Syukur Budi Santoso & Putri Mirza Bayyinatur Rosyidah, S.Pd.", jadwal: "Jumat, 13.00 - 15.00 WIB (Lap Indor)", kontak: "Pengurus Dewan Ambalan SMKN 5 Malang", deskripsi: "Pendidikan kepanduan yang membentuk karakter mandiri, kerja sama regu, keterampilan tali-temali, dan pionering.", perlengkapan: "Seragam Pramuka lengkap beserta atribut (hasduk, baret/topi), tali pramuka, buku saku, dan alat tulis.", prestasi: "Aktif berpartisipasi dalam lomba kepramukaan tingkat Kota Malang dan Jawa Timur.", foto: "assets/img/1795069125_pramuka.jpg", pelatih_id: null, status_pelatih: "aktif" },
-    { id: 2, nama: "PASKIBRA", pembina: "Agil Evan, M.Tr.T.", jadwal: "Sabtu, 07.00 - 12.00 WIB (Lap. Basket)", kontak: "Pengurus Paskibra Vohisma", deskripsi: "Pasukan Pengibar Bendera sekolah yang menempa kedisiplinan tinggi, jiwa kepemimpinan, dan ketegasan PBB.", perlengkapan: "Pakaian latihan (kaos olahraga & celana training), sepatu olahraga bertali kuat, topi latihan, dan botol minum.", prestasi: "Juara Lomba Ketangkasan Baris-Berbaris (LKBB) tingkat Malang Raya.", foto: "assets/img/paskii.jpg", pelatih_id: null, status_pelatih: "aktif" },
-    { id: 3, nama: "TEATER", pembina: "Belum diatur", jadwal: "Jumat, 15.00 WIB (Auditorium)", kontak: "Pengurus Teater SMKN 5 Malang", deskripsi: "Wadah olah peran, olah tubuh, olah vokal, penulisan naskah drama, dan tata panggung.", perlengkapan: "Pakaian latihan berwarna gelap yang nyaman bergerak, naskah latihan, alat tulis, dan air minum.", prestasi: "Pementasan karya teater pelajar tingkat Kota Malang.", foto: "assets/img/1795054054_teater.jpg", pelatih_id: null, status_pelatih: "aktif" },
-    { id: 4, nama: "BDI", pembina: "Syifaun Nisa Azzahra, S.H", jadwal: "Senin, 15.30 - 17.00 WIB (Masjid)", kontak: "Pengurus Badan Dakwah Islam (BDI)", deskripsi: "Badan Dakwah Islam di Masjid sekolah yang berfokus pada kajian keislaman, seni banjari/hadrah, dan pembinaan akhlak.", perlengkapan: "Busana muslim sopan/seragam sekolah rapi, perlengkapan salat pribadi, Al-Qur'an saku, dan buku catatan.", prestasi: "Juara Festival Al-Banjari antar pelajar SMK/SMA.", foto: "assets/img/1795061129_bdi.jpg", pelatih_id: null, status_pelatih: "aktif" },
-    { id: 5, nama: "SEPAKBOLA", pembina: "Belum diatur", jadwal: "Jumat, 15.00 WIB (Lapangan)", kontak: "Pengurus Ekskul Sepakbola", deskripsi: "Pembinaan olahraga sepak bola lapangan besar yang mencakup latihan fisik, penguasaan bola, dan strategi.", perlengkapan: "Sepatu bola (pul), pelindung tulang kering, kaos kaki panjang, jersey/kaos olahraga, dan botol minum.", prestasi: "Tim perwakilan sekolah pada turnamen sepak bola pelajar.", foto: "assets/img/1795069395_sepak bola.jpg", pelatih_id: null, status_pelatih: "aktif" },
-    { id: 6, nama: "VOLI", pembina: "Amelya Ratu Airin", jadwal: "Kamis, 15.30 - 17.00 WIB (Lap Voli)", kontak: "Pengurus Ekskul Bola Voli", deskripsi: "Ekstrakurikuler olahraga beregu di Lapangan Voli yang melatih teknik passing, service, smash, dan blocking.", perlengkapan: "Sepatu olahraga sol karet, pelindung lutut (knee pad), kaos dan celana olahraga, kaos kaki, dan botol minum.", prestasi: "Finalis kejuaraan bola voli antar SMK se-Kota Malang.", foto: "assets/img/1795083857_voli.jpg", pelatih_id: null, status_pelatih: "aktif" },
-    { id: 7, nama: "BULU TANGKIS", pembina: "Belum diatur", jadwal: "Kamis, 15.30 - 17.30 WIB (Lap Indor)", kontak: "Pengurus Ekskul Bulu Tangkis", deskripsi: "Ekstrakurikuler olahraga raket yang berfokus pada kelincahan footwork, teknik pukulan lob, smash, dropshot, dan stamina.", perlengkapan: "Raket bulutangkis pribadi, shuttlecock latihan, sepatu olahraga non-marking, pakaian olahraga, dan air minum.", prestasi: "Perwakilan O2SN cabang Bulu Tangkis tingkat Kota Malang.", foto: "assets/img/1795061177_bulu tangkis.jpg", pelatih_id: null, status_pelatih: "aktif" },
-    { id: 8, nama: "KUNGFU", pembina: "Belum diatur", jadwal: "Jumat, 15.00 WIB (Lap Indor)", kontak: "Pengurus Ekskul Kungfu", deskripsi: "Seni bela diri tradisional Tiongkok yang melatih kelenturan tubuh, keseimbangan, kecepatan gerak, dan pengendalian diri.", perlengkapan: "Pakaian latihan bela diri/kaos olahraga longgar, celana training, sepatu olahraga ringan, dan air minum.", prestasi: "Medali kejuaraan Wushu & Kungfu pelajar.", foto: "assets/img/1795061717_kungfu.jpg", pelatih_id: null, status_pelatih: "aktif" },
-    { id: 9, nama: "PENCAK SILAT", pembina: "Belum diatur", jadwal: "Jumat, 15.00 WIB (Lap Indor)", kontak: "Pengurus Ekskul Pencak Silat", deskripsi: "Seni bela diri tradisional warisan budaya Indonesia yang melatih kelincahan, kekuatan fisik, dan jurus.", perlengkapan: "Seragam latihan pencak silat beserta sabuk, pelindung tubuh (jika memiliki), dan air minum.", prestasi: "Juara kejuaraan pencak silat pelajar tingkat Kota Malang.", foto: "assets/img/1795068664_pencak silat.jpg", pelatih_id: null, status_pelatih: "aktif" },
-    { id: 10, nama: "KARATE", pembina: "Belum diatur", jadwal: "Jumat, 15.00 WIB (Lap Indor)", kontak: "Pengurus Ekskul Karate", deskripsi: "Seni bela diri yang menempa kedisiplinan, ketahanan mental, teknik dasar tangkisan, pukulan, tendangan, serta penguasaan jurus.", perlengkapan: "Seragam karate (gi) beserta sabuk sesuai tingkatan, pelindung tangan/kaki, dan botol air minum.", prestasi: "Medali kejuaraan kata dan kumite tingkat provinsi.", foto: "assets/img/1795061583_karate.jpg", pelatih_id: null, status_pelatih: "aktif" },
-    { id: 11, nama: "FUTSAL", pembina: "Mohammad Riza Indrayanto", jadwal: "Rabu, 19.00 - 21.00 WIB (Lap Indor)", kontak: "Pengurus Ekskul Futsal", deskripsi: "Ekstrakurikuler olahraga beregu yang berfokus pada kecepatan kontrol bola, akurasi umpan pendek, taktik bertahan dan menyerang.", perlengkapan: "Sepatu futsal, pelindung tulang kering (shin guard), kaos kaki panjang, jersey/kaos olahraga, dan air minum.", prestasi: "Juara turnamen futsal antar pelajar SMA/SMK Malang Raya.", foto: "assets/img/1795061490_futsal.jpg", pelatih_id: 3, status_pelatih: "aktif" },
-    { id: 12, nama: "DRUMBAND", pembina: "Belum diatur", jadwal: "Jumat, 15.00 WIB (Lap Indor)", kontak: "Pengurus Ekskul Drumband", deskripsi: "Ekstrakurikuler seni musik perkusi dan tiup yang memadukan keterampilan memainkan alat musik drumband dengan kekompakan baris-berbaris.", perlengkapan: "Pakaian olahraga/latihan yang nyaman, sepatu olahraga bertali, topi latihan, dan botol air minum.", prestasi: "Penampil utama pawai budaya dan upacara besar sekolah.", foto: "assets/img/1795061299_drumband.jpg", pelatih_id: null, status_pelatih: "aktif" },
-    { id: 13, nama: "ENGLISH CONVERSATION CLUB", pembina: "Muhammad Syafi'i, S.Pd., M.Si.", jadwal: "Kamis, 15.30 - 17.00 WIB (Lab Workshop DKV)", kontak: "Pengurus ECC SMKN 5 Malang", deskripsi: "Komunitas praktik percakapan bahasa Inggris secara aktif, diskusi, debat, dan storytelling di Lab Workshop DKV.", perlengkapan: "Buku catatan kosakata, alat tulis, kamus saku/aplikasi kamus di smartphone, dan botol minum.", prestasi: "Finalis English Debate & Storytelling Competition tingkat SMK.", foto: "assets/img/1795061432_ec.jpg", pelatih_id: null, status_pelatih: "aktif" },
-    { id: 14, nama: "TARI TRADISIONAL", pembina: "Abdullah Muhammad Yusuf", jadwal: "Selasa, 15.30 - 17.00 WIB (Aula / Lap Indor)", kontak: "Pengurus Ekskul Tari Tradisional", deskripsi: "Melestarikan seni tari daerah Nusantara dengan melatih keluwesan gerak, wiraga, wirama, dan wirasa.", perlengkapan: "Kain jarik/sampur (selendang tari), pakaian latihan yang nyaman bergerak, kaos kaki, dan botol minum.", prestasi: "Juara Festival Tari Tradisional tingkat Kota Malang.", foto: "assets/img/1795069432_tari.jpg", pelatih_id: null, status_pelatih: "aktif" },
-    { id: 15, nama: "MODERN DANCE", pembina: "Rendra Orlando S.", jadwal: "Kamis, 15.30 - 17.00 WIB (Lap Indor)", kontak: "Pengurus Ekskul Modern Dance", deskripsi: "Ekstrakurikuler seni tari modern yang melatih kelenturan gerak, energi panggung, dan kekompakan koreografi.", perlengkapan: "Pakaian latihan yang nyaman dan menyerap keringat, sepatu sneakers/dance lentur, dan air minum.", prestasi: "Juara Dance Competition antar pelajar Malang Raya.", foto: "assets/img/1795061790_dance.jpg", pelatih_id: null, status_pelatih: "aktif" },
-    { id: 16, nama: "KARAWITAN", pembina: "Sony Eko Wandono, S.Sn.", jadwal: "Rabu, 15.30 - 17.00 WIB (Aula Depan)", kontak: "Pengurus Ekskul Karawitan", deskripsi: "Pelestarian seni budaya tradisional Jawa melalui latihan memainkan instrumen gamelan serta olah vokal sinden.", perlengkapan: "Pakaian sopan dan rapi (kaos kaki bersih untuk masuk area gamelan), buku catatan notasi gending, dan alat tulis.", prestasi: "Pengiring resmi acara wisuda dan festival seni budaya daerah.", foto: "assets/img/1795061632_karawitan.jpg", pelatih_id: null, status_pelatih: "aktif" },
-    { id: 17, nama: "SENI MUSIK", pembina: "Jeni Astina Siringo", jadwal: "Kamis, 16.00 - 17.30 WIB (Aula Depan)", kontak: "Pengurus Ekskul Seni Musik", deskripsi: "Menyalurkan bakat bermusik siswa dalam memainkan instrumen band maupun akustik dan olah vokal.", perlengkapan: "Alat musik pribadi seperti gitar/bass/stick drum (jika ada), pick gitar, kabel jack, dan catatan lagu.", prestasi: "Juara Festival Band Pelajar se-Malang Raya.", foto: "assets/img/1795069282_seni musik.jpg", pelatih_id: null, status_pelatih: "aktif" },
-    { id: 18, nama: "BASKET", pembina: "Belum diatur", jadwal: "Rabu & Jumat, 15.30 - 17.30 WIB (Lap. Basket)", kontak: "Pengurus Ekskul Basket", deskripsi: "Ekstrakurikuler olahraga bola basket yang melatih teknik dribbling, passing, shooting, defense, serta kekompakan kerja sama tim.", perlengkapan: "Sepatu basket/olahraga bersol karet, kaos dan celana olahraga, kaos kaki, handuk kecil, dan botol air minum.", prestasi: "Tim perwakilan turnamen bola basket pelajar Kota Malang.", foto: "assets/img/1795061030_basketball.jpeg", pelatih_id: null, status_pelatih: "aktif" },
-    { id: 19, nama: "JURNALISTIK", pembina: "R. H. Authonul Muther", jadwal: "Kamis, 15.30 - 17.00 WIB (Auditorium)", kontak: "Pengurus Jurnalistik Vohisma", deskripsi: "Wadah bagi siswa yang gemar menulis, meliput berita, wawancara narasumber, dan mendokumentasikan kegiatan sekolah.", perlengkapan: "Buku catatan kecil (notes), pulpen, smartphone/alat perekam suara, serta laptop (jika ada).", prestasi: "Tim liputan resmi media sekolah dan majalah dinding Vohisma.", foto: "assets/img/1795061527_jurnalis.jpg", pelatih_id: null, status_pelatih: "aktif" },
-    { id: 20, nama: "PMR", pembina: "M. Sururi Al Faruq, S.Pd.", jadwal: "Selasa, 15.45 - 17.00 WIB (G104)", kontak: "Pengurus PMR Wira SMKN 5 Malang", deskripsi: "Palang Merah Remaja yang membekali siswa dengan keterampilan pertolongan pertama pada kecelakaan (P3K), penanganan medis darurat saat upacara atau acara sekolah, serta kegiatan kemanusiaan.", perlengkapan: "Buku saku kepalangmerahan, alat tulis, slayer/syal PMR, perlengkapan P3K dasar latihan (perban gulung/mitela), dan air minum.", prestasi: "Juara Lomba Pertolongan Pertama & Kepalangmerahan tingkat Wira.", foto: "assets/img/1795069049_1794984776_pmr.png", pelatih_id: null, status_pelatih: "aktif" },
-    { id: 21, nama: "KARYA ILMIAH REMAJA", pembina: "Belum diatur", jadwal: "Jumat, 15.00 WIB (Ruang Kelas)", kontak: "Pengurus KIR SMKN 5 Malang", deskripsi: "Ekstrakurikuler riset dan inovasi bagi siswa yang gemar bereksperimen serta menyusun karya tulis ilmiah.", perlengkapan: "Buku catatan riset, alat tulis, laptop, serta bahan eksperimen sesuai proyek kelompok.", prestasi: "Finalis Lomba Karya Tulis Ilmiah Remaja (LKIR) tingkat Jawa Timur.", foto: "assets/img/1795061669_kir.jpg", pelatih_id: null, status_pelatih: "aktif" }
+    { id: 1, nama: "PRAMUKA", pembina: "Abdul Syukur Budi Santoso", jadwal: "Jumat, 13.00 - 15.00 WIB", kontak: "Pengurus Dewan Ambalan", deskripsi: "Pendidikan kepanduan yang membentuk karakter mandiri dan kerja sama regu.", perlengkapan: "Seragam Pramuka lengkap, buku saku.", prestasi: "Aktif tingkat Kota Malang.", foto: "assets/img/1795069125_pramuka.jpg", pelatih_id: null, status_pelatih: "aktif" },
+    { id: 2, nama: "PASKIBRA", pembina: "Agil Evan, M.Tr.T.", jadwal: "Sabtu, 07.00 - 12.00 WIB", kontak: "Pengurus Paskibra", deskripsi: "Pasukan Pengibar Bendera sekolah dengan kedisiplinan tinggi.", perlengkapan: "Kaos olahraga, sepatu olahraga.", prestasi: "Juara LKBB Malang Raya.", foto: "assets/img/paskii.jpg", pelatih_id: null, status_pelatih: "aktif" },
+    { id: 3, nama: "FUTSAL", pembina: "Mohammad Riza Indrayanto", jadwal: "Rabu, 19.00 - 21.00 WIB", kontak: "Pengurus Futsal", deskripsi: "Olahraga beregu bola besar.", perlengkapan: "Sepatu futsal, shin guard.", prestasi: "Juara turnamen antar pelajar.", foto: "assets/img/1795061490_futsal.jpg", pelatih_id: 3, status_pelatih: "aktif" }
 ];
 
 function getStore(key, fallback) {
@@ -822,7 +795,6 @@ function renderDashboard() {
     const activeRole = (currentUser.role === 'admin' && previewRole) ? previewRole : currentUser.role;
 
     const nav = document.getElementById('mainNavbar');
-    nav.className = 'navbar ' + (activeRole === 'admin' ? 'admin' : (activeRole === 'pelatih' ? 'pelatih' : ''));
     document.getElementById('navRoleText').textContent =
         activeRole === 'admin' ? 'Admin Command Center' :
         (activeRole === 'pelatih' ? 'Portal Pelatih' : 'Portal Siswa');
@@ -836,7 +808,7 @@ function renderDashboard() {
         bannerArea.innerHTML = `
             <div class="preview-banner">
                 <span>👀 Mode Pratinjau Admin: Menampilkan halaman sebagai ${previewRole.toUpperCase()}</span>
-                <button type="button" onclick="setPreviewMode(null)" style="background:#fff; color:#92400e; padding:6px 14px; border-radius:50px; font-size:12px; box-shadow:none; border:none; cursor:pointer;">← Kembali ke Admin</button>
+                <button type="button" onclick="setPreviewMode(null)" style="background:#fff; color:#065f46; padding:6px 14px; border-radius:50px; font-size:12px; box-shadow:none; border:none; cursor:pointer;">← Kembali ke Admin</button>
             </div>
         `;
     } else {
@@ -884,10 +856,10 @@ function renderEkskulGrid(activeRole) {
                 <div style="font-size:12.5px; color:#64748b;">👨‍🏫 ${e.pembina}</div>
                 <p style="font-size:13px; color:#334155; flex:1; line-height:1.5;">${e.deskripsi}</p>
                 <div style="display:flex; gap:8px; margin-top:8px;">
-                    <button type="button" class="btn" style="flex:1;" onclick="bukaModalEkskul(${e.id})">
+                    <button type="button" class="btn" style="flex:1; background:#059669;" onclick="bukaModalEkskul(${e.id})">
                         ${activeRole === 'admin' ? '✏️ Kelola / Edit' : 'ℹ️ Lihat Detail'}
                     </button>
-                    ${activeRole === 'admin' ? `<button type="button" class="btn btn-del" onclick="adminHapusEkskul(${e.id})">🗑️</button>` : ''}
+                    ${activeRole === 'admin' ? `<button type="button" class="btn btn-del" style="background:#ef4444; color:#fff;" onclick="adminHapusEkskul(${e.id})">🗑️</button>` : ''}
                 </div>
             </div>
         `;
@@ -913,8 +885,8 @@ function renderSiswaPanel() {
             <td><span class="badge ${p.status}">${p.status.toUpperCase()}</span></td>
             <td>
                 <div style="display:flex; gap:6px; flex-wrap:wrap;">
-                    <button type="button" class="btn" style="padding:5px 12px; font-size:12px;" onclick="bukaModalEkskul(${eks.id})">Detail</button>
-                    ${p.status === 'pending' ? `<button type="button" class="btn btn-del" style="padding:5px 12px; font-size:12px;" onclick="siswaBatalkanPendaftaran(${eks.id})">✕ Batalkan</button>` : ''}
+                    <button type="button" class="btn" style="padding:5px 12px; font-size:12px; background:#059669;" onclick="bukaModalEkskul(${eks.id})">Detail</button>
+                    ${p.status === 'pending' ? `<button type="button" class="btn btn-del" style="padding:5px 12px; font-size:12px; background:#ef4444; color:#fff;" onclick="siswaBatalkanPendaftaran(${eks.id})">✕ Batalkan</button>` : ''}
                 </div>
             </td>
         </tr>`;
@@ -973,13 +945,13 @@ function renderPelatihPanel() {
     if (!binaan) {
         const tersedia = ekskuls.filter(e => !e.pelatih_id);
         box.innerHTML = `
-            <h2>⚡ Ajukan Ekstrakurikuler yang Dilatih</h2>
-            <p class="text-muted" style="font-size:13px; margin-bottom:12px;">Pilih ekstrakurikuler di bawah ini untuk diajukan ke Admin:</p>
+            <h2>⚡ Ajukan / Batalkan Tugas Melatih Ekstrakurikuler</h2>
+            <p class="text-muted" style="font-size:13px; margin-bottom:12px;">Pilih ekstrakurikuler di bawah ini untuk diajukan sebagai pelatih:</p>
             <div style="display:flex; gap:10px; flex-wrap:wrap;">
                 <select id="pilihEkskulPelatih" style="max-width:300px; margin:0;">
                     ${tersedia.map(e => `<option value="${e.id}">${e.nama}</option>`).join('')}
                 </select>
-                <button type="button" class="btn btn-daftar" onclick="pelatihAjukanEkskul()">Ajukan Melatih</button>
+                <button type="button" class="btn btn-daftar" style="background:#059669;" onclick="pelatihAjukanEkskul()">Ajukan Melatih</button>
             </div>
         `;
         tbl.innerHTML = `<tr><td class="text-muted" style="text-align:center;">Belum ada ekskul binaan aktif.</td></tr>`;
@@ -987,7 +959,10 @@ function renderPelatihPanel() {
     }
 
     if (binaan.status_pelatih === 'pending') {
-        box.innerHTML = `<div class="alert" style="background:#fef9c3; color:#854d0e; margin:0;">⏳ Pengajuan kamu sebagai pelatih <b>${binaan.nama}</b> sedang menunggu persetujuan Admin.</div>`;
+        box.innerHTML = `
+            <div class="alert" style="background:#fef9c3; color:#854d0e; margin:0 0 12px 0;">⏳ Pengajuan kamu sebagai pelatih <b>${binaan.nama}</b> sedang menunggu persetujuan Admin.</div>
+            <button type="button" class="btn btn-del" style="background:#ef4444; color:#fff;" onclick="pelatihBatalkanPengajuan(${binaan.id})">✕ Batalkan Pengajuan Melatih</button>
+        `;
         tbl.innerHTML = `<tr><td class="text-muted" style="text-align:center;">Menunggu ACC Admin.</td></tr>`;
         return;
     }
@@ -999,7 +974,10 @@ function renderPelatihPanel() {
             <div class="form-group"><label>📞 Kontak Pengurus Ekskul</label><input type="text" id="pltKontak" value="${binaan.kontak || ''}"></div>
         </div>
         <div class="form-group"><label>🎒 Perlengkapan Dibawa</label><textarea id="pltPerlengkapan" rows="2">${binaan.perlengkapan}</textarea></div>
-        <button type="button" class="btn" onclick="pelatihSimpanInfo(${binaan.id})">💾 Simpan Perubahan Jadwal & Info</button>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <button type="button" class="btn" style="background:#059669;" onclick="pelatihSimpanInfo(${binaan.id})">💾 Simpan Perubahan Jadwal & Info</button>
+            <button type="button" class="btn btn-del" style="background:#ef4444; color:#fff;" onclick="pelatihBatalkanPengajuan(${binaan.id})">✕ Berhenti Melatih Ekskul Ini</button>
+        </div>
     `;
 
     const listDaftar = pendaftarans.filter(p => p.ekskul_id === binaan.id);
@@ -1020,8 +998,8 @@ function renderPelatihPanel() {
             <td><span class="badge ${p.status}">${p.status.toUpperCase()}</span></td>
             <td>
                 ${p.status === 'pending' ? `
-                    <button type="button" class="btn btn-daftar" style="padding:4px 10px; font-size:12px;" onclick="ubahStatusSiswa(${p.id}, 'diterima')">✓ ACC</button>
-                    <button type="button" class="btn btn-del" style="padding:4px 10px; font-size:12px;" onclick="ubahStatusSiswa(${p.id}, 'ditolak')">✕ Tolak</button>
+                    <button type="button" class="btn btn-daftar" style="padding:4px 10px; font-size:12px; background:#059669;" onclick="ubahStatusSiswa(${p.id}, 'diterima')">✓ ACC</button>
+                    <button type="button" class="btn btn-del" style="padding:4px 10px; font-size:12px; background:#ef4444; color:#fff;" onclick="ubahStatusSiswa(${p.id}, 'ditolak')">✕ Tolak</button>
                 ` : '-'}
             </td>
         </tr>`;
@@ -1030,7 +1008,9 @@ function renderPelatihPanel() {
 }
 
 function pelatihAjukanEkskul() {
-    const eid = parseInt(document.getElementById('pilihEkskulPelatih').value);
+    const select = document.getElementById('pilihEkskulPelatih');
+    if (!select || !select.value) return;
+    const eid = parseInt(select.value);
     const eks = ekskuls.find(e => e.id === eid);
     eks.pelatih_id = currentUser.id;
     eks.status_pelatih = 'pending';
@@ -1039,6 +1019,17 @@ function pelatihAjukanEkskul() {
         addNotif(adm.id, `Pelatih ${currentUser.nama} mengajukan diri melatih ekskul ${eks.nama}.`);
     });
     showAlert('appAlert', `⏳ Pengajuan melatih <b>${eks.nama}</b> terkirim ke Admin.`);
+    renderDashboard();
+}
+
+function pelatihBatalkanPengajuan(eid) {
+    const eks = ekskuls.find(e => e.id === eid);
+    if (!confirm(`Apakah Anda yakin ingin membatalkan tugas/pengajuan melatih ${eks ? eks.nama : ''}?`)) return;
+    
+    eks.pelatih_id = null;
+    eks.status_pelatih = 'aktif';
+    setStore('vohisma_ekskuls', ekskuls);
+    showAlert('appAlert', `🗑️ Tugas melatih ekstrakurikuler berhasil dibatalkan.`, 'danger');
     renderDashboard();
 }
 
@@ -1074,8 +1065,8 @@ function renderAdminPanel() {
                 <td><strong>${plt ? plt.nama : '-'}</strong></td>
                 <td><span class="badge pending">${e.nama}</span></td>
                 <td>
-                    <button type="button" class="btn btn-daftar" style="padding:4px 12px; font-size:12px;" onclick="adminAccPelatih(${e.id}, true)">✓ ACC</button>
-                    <button type="button" class="btn btn-del" style="padding:4px 12px; font-size:12px;" onclick="adminAccPelatih(${e.id}, false)">✕ Tolak</button>
+                    <button type="button" class="btn btn-daftar" style="padding:4px 12px; font-size:12px; background:#059669;" onclick="adminAccPelatih(${e.id}, true)">✓ ACC</button>
+                    <button type="button" class="btn btn-del" style="padding:4px 12px; font-size:12px; background:#ef4444; color:#fff;" onclick="adminAccPelatih(${e.id}, false)">✕ Tolak</button>
                 </td>
             </tr>`;
         });
@@ -1101,26 +1092,25 @@ function renderAdminPanel() {
                 <td><span class="badge ${p.status}">${p.status.toUpperCase()}</span></td>
                 <td>
                     ${p.status === 'pending' ? `
-                        <button type="button" class="btn btn-daftar" style="padding:4px 10px; font-size:12px;" onclick="ubahStatusSiswa(${p.id}, 'diterima')">✓ ACC</button>
-                        <button type="button" class="btn btn-kembali" style="padding:4px 10px; font-size:12px;" onclick="ubahStatusSiswa(${p.id}, 'ditolak')">✕ Tolak</button>
+                        <button type="button" class="btn btn-daftar" style="padding:4px 10px; font-size:12px; background:#059669;" onclick="ubahStatusSiswa(${p.id}, 'diterima')">✓ ACC</button>
+                        <button type="button" class="btn btn-kembali" style="padding:4px 10px; font-size:12px; background:#ef4444; color:#fff;" onclick="ubahStatusSiswa(${p.id}, 'ditolak')">✕ Tolak</button>
                     ` : ''}
-                    <button type="button" class="btn btn-del" style="padding:4px 10px; font-size:12px;" onclick="hapusPendaftaran(${p.id})">Hapus</button>
+                    <button type="button" class="btn btn-del" style="padding:4px 10px; font-size:12px; background:#64748b; color:#fff;" onclick="hapusPendaftaran(${p.id})">Hapus</button>
                 </td>
             </tr>`;
         });
         tblP.innerHTML = htmlP;
     }
 
-    let htmlU = `<tr><th>Nama</th><th>NIS / NIP / ID</th><th>Kelas</th><th>Jenis Kelamin</th><th>Alamat</th><th>Role</th><th>Aksi</th></tr>`;
+    let htmlU = `<tr><th>Nama</th><th>NIS / NIP / ID</th><th>Password</th><th>Kelas</th><th>Role</th><th>Aksi</th></tr>`;
     users.forEach(u => {
         htmlU += `<tr>
             <td><strong>${u.nama}</strong></td>
             <td>${u.nomor_induk}</td>
+            <td><code>${u.password}</code></td>
             <td>${u.kelas}</td>
-            <td>${u.jenis_kelamin || '-'}</td>
-            <td>${u.alamat || '-'}</td>
             <td><span class="badge ${u.role === 'admin' ? 'ditolak' : (u.role === 'pelatih' ? 'pending' : 'diterima')}">${u.role.toUpperCase()}</span></td>
-            <td>${u.id !== currentUser.id ? `<button type="button" class="btn btn-del" style="padding:4px 10px; font-size:12px;" onclick="adminHapusUser(${u.id})">Hapus</button>` : '<span class="text-muted" style="font-size:12px;">Akun Aktif</span>'}</td>
+            <td>${u.id !== currentUser.id ? `<button type="button" class="btn btn-del" style="padding:4px 10px; font-size:12px; background:#ef4444; color:#fff;" onclick="adminHapusUser(${u.id})">Hapus</button>` : '<span class="text-muted" style="font-size:12px;">Akun Aktif</span>'}</td>
         </tr>`;
     });
     document.getElementById('tblAdminUsers').innerHTML = htmlU;
@@ -1230,8 +1220,8 @@ function bukaModalEkskul(eid) {
             <div class="form-group"><label>🎒 Perlengkapan Dibawa</label><textarea id="edPerlengkapan" rows="2">${e.perlengkapan}</textarea></div>
             <div class="form-group"><label>🏆 Prestasi</label><textarea id="edPrestasi" rows="2">${e.prestasi || ''}</textarea></div>
             <div style="display:flex; gap:8px;">
-                <button type="button" class="btn" style="flex:1;" onclick="adminSimpanEditEkskul(${e.id})">💾 Simpan Perubahan</button>
-                <button type="button" class="btn btn-kembali" onclick="document.getElementById('modalDetail').style.display='none'">Batal</button>
+                <button type="button" class="btn" style="flex:1; background:#059669;" onclick="adminSimpanEditEkskul(${e.id})">💾 Simpan Perubahan</button>
+                <button type="button" class="btn btn-kembali" style="background:#64748b; color:#fff;" onclick="document.getElementById('modalDetail').style.display='none'">Batal</button>
             </div>
         `;
     } else {
@@ -1239,11 +1229,11 @@ function bukaModalEkskul(eid) {
         if (activeRole === 'siswa') {
             const p = pendaftarans.find(x => x.siswa_id === currentUser.id && x.ekskul_id === e.id);
             if (!p) {
-                actionBtn = `<button type="button" class="btn btn-daftar btn-block" onclick="siswaDaftarEkskul(${e.id})">✨ Daftar Ekskul Ini Sekarang</button>`;
+                actionBtn = `<button type="button" class="btn btn-daftar btn-block" style="background:#059669;" onclick="siswaDaftarEkskul(${e.id})">✨ Daftar Ekskul Ini Sekarang</button>`;
             } else if (p.status === 'pending') {
                 actionBtn = `
                     <div class="alert alert-success" style="text-align:center; margin-bottom:10px;">Status Pendaftaran Kamu: <b>PENDING</b> (Menunggu Konfirmasi)</div>
-                    <button type="button" class="btn btn-del btn-block" onclick="siswaBatalkanPendaftaran(${e.id})">✕ Batalkan Pendaftaran Ekskul Ini</button>
+                    <button type="button" class="btn btn-del btn-block" style="background:#ef4444; color:#fff;" onclick="siswaBatalkanPendaftaran(${e.id})">✕ Batalkan Pendaftaran Ekskul Ini</button>
                 `;
             } else {
                 actionBtn = `<div class="alert alert-success" style="text-align:center; margin:0;">Status Pendaftaran Kamu: <b>${p.status.toUpperCase()}</b></div>`;
