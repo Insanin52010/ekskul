@@ -69,10 +69,10 @@
             color: #475569;
         }
         .demo-accounts-box button {
-            padding: 4px 10px;
+            padding: 5px 12px;
             font-size: 11px;
             border-radius: 50px;
-            margin: 3px 3px 0 0;
+            margin: 4px 4px 0 0;
         }
         .ekskul-cards-grid {
             display: grid;
@@ -88,6 +88,11 @@
             border: 1px solid #e2e8f0;
             display: flex;
             flex-direction: column;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .ekskul-item-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 36px rgba(79, 70, 229, 0.14);
         }
         .ekskul-item-card img {
             width: 100%;
@@ -158,6 +163,20 @@
             border-radius: 50px;
             margin-left: 4px;
         }
+        .preview-banner {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #fff;
+            padding: 12px 18px;
+            border-radius: 16px;
+            margin-bottom: 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            font-size: 13px;
+            font-weight: 600;
+        }
     </style>
 </head>
 <body>
@@ -195,10 +214,10 @@
                 <button type="submit" class="btn btn-block">Masuk Sekarang</button>
 
                 <div class="demo-accounts-box">
-                    <div style="font-weight: 700; margin-bottom: 6px; color: #1e293b;">⚡ Login Cepat (Akun Bawaan):</div>
+                    <div style="font-weight: 700; margin-bottom: 6px; color: #1e293b;">⚡ Akses Cepat Akun:</div>
                     <button type="button" class="btn" onclick="quickLogin('admin', '123456')">🛡️ Admin</button>
-                    <button type="button" class="btn btn-daftar" onclick="quickLogin('1001', '12345')">🎓 Siswa Demo</button>
-                    <button type="button" style="background:#eab308; color:#422006;" onclick="quickLogin('2001', '12345')">⚡ Pelatih Demo</button>
+                    <button type="button" class="btn btn-daftar" onclick="quickLogin('1001', '12345')">🎓 Siswa</button>
+                    <button type="button" style="background:#eab308; color:#422006;" onclick="quickLogin('2001', '12345')">⚡ Pelatih</button>
                 </div>
             </form>
 
@@ -257,6 +276,10 @@
             <span class="nav-role" id="navRoleText">Portal Siswa</span>
         </div>
         <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+            <div id="adminPreviewBtns" style="display: none; gap: 6px;">
+                <button type="button" onclick="setPreviewMode('siswa')" style="background: linear-gradient(135deg, #60a5fa, #8b5cf6); padding: 7px 13px; font-size: 12px; box-shadow: none;">👀 Pratinjau Siswa</button>
+                <button type="button" onclick="setPreviewMode('pelatih')" style="background: linear-gradient(135deg, #fde047, #facc15); color: #422006; padding: 7px 13px; font-size: 12px; box-shadow: none;">👀 Pratinjau Pelatih</button>
+            </div>
             <span id="navUserName" style="font-size: 13px; font-weight: 700; color: #1e293b; margin-right: 4px;"></span>
             <button type="button" class="notif-badge-btn" onclick="bukaNotifModal()">🔔 Notifikasi <span class="notif-count" id="notifCountBadge">0</span></button>
             <button type="button" class="btn-logout" onclick="logoutUser()" style="padding: 8px 16px; border-radius: 50px;">Keluar</button>
@@ -264,6 +287,7 @@
     </div>
 
     <div class="container">
+        <div id="previewBannerArea"></div>
         <div id="appAlert"></div>
 
         <!-- PANEL KHUSUS ADMIN -->
@@ -312,6 +336,7 @@
                         <div class="form-group"><label>Deskripsi</label><textarea id="newEksDesk" rows="2" required></textarea></div>
                         <div class="form-group"><label>Perlengkapan Dibawa</label><textarea id="newEksPerlengkapan" rows="2"></textarea></div>
                     </div>
+                    <div class="form-group"><label>🏆 Prestasi</label><textarea id="newEksPrestasi" rows="2" placeholder="Daftar prestasi ekstrakurikuler..."></textarea></div>
                     <button type="submit" class="btn">✓ Simpan Ekskul Baru</button>
                 </form>
             </div>
@@ -338,12 +363,12 @@
             </div>
         </div>
 
-        <!-- DAFTAR 21 EKSKUL (TAMPIL DI SEMUA ROLE) -->
+        <!-- DAFTAR EKSKUL (TAMPIL DI SEMUA ROLE) -->
         <div class="card-box">
             <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
                 <div>
                     <h2 style="margin-bottom: 4px; border: none; padding: 0;">Daftar Ekstrakurikuler SMKN 5 Malang</h2>
-                    <p class="text-muted" style="font-size: 13px;">Klik tombol detail untuk melihat informasi lengkap atau mengelola ekskul.</p>
+                    <p class="text-muted" style="font-size: 13px;">Klik tombol detail untuk melihat informasi lengkap ekstrakurikuler.</p>
                 </div>
                 <input type="text" id="searchEkskulInput" onkeyup="renderDashboard()" placeholder="🔍 Cari nama ekskul / jadwal..." style="max-width: 270px; margin: 0; border-radius: 50px; padding: 10px 18px;">
             </div>
@@ -381,27 +406,27 @@ const DEFAULT_USERS = [
 ];
 
 const DEFAULT_EKSKUL = [
-    { id: 1, nama: "PRAMUKA", pembina: "Abdul Syukur Budi Santoso & Putri Mirza Bayyinatur Rosyidah, S.Pd.", jadwal: "Jumat, 13.00 - 15.00 WIB (Lap Indor)", kontak: "Pengurus Dewan Ambalan SMKN 5 Malang", deskripsi: "Pendidikan kepanduan yang membentuk karakter mandiri, kerja sama regu, keterampilan tali-temali, dan pionering.", perlengkapan: "Seragam Pramuka lengkap beserta atribut (hasduk, baret/topi), tali pramuka, buku saku, dan alat tulis.", foto: "assets/img/1795069125_pramuka.jpg", pelatih_id: null, status_pelatih: "aktif" },
-    { id: 2, nama: "PASKIBRA", pembina: "Agil Evan, M.Tr.T.", jadwal: "Sabtu, 07.00 - 12.00 WIB (Lap. Basket)", kontak: "Pengurus Paskibra Vohisma", deskripsi: "Pasukan Pengibar Bendera sekolah yang menempa kedisiplinan tinggi, jiwa kepemimpinan, dan ketegasan PBB.", perlengkapan: "Pakaian latihan (kaos olahraga & celana training), sepatu olahraga bertali kuat, topi latihan, dan botol minum.", foto: "assets/img/paskii.jpg", pelatih_id: null, status_pelatih: "aktif" },
-    { id: 3, nama: "TEATER", pembina: "Belum diatur", jadwal: "Jumat, 15.00 WIB (Auditorium)", kontak: "Pengurus Teater SMKN 5 Malang", deskripsi: "Wadah olah peran, olah tubuh, olah vokal, penulisan naskah drama, dan tata panggung.", perlengkapan: "Pakaian latihan berwarna gelap yang nyaman bergerak, naskah latihan, alat tulis, dan air minum.", foto: "assets/img/1795054054_teater.jpg", pelatih_id: null, status_pelatih: "aktif" },
-    { id: 4, nama: "BDI", pembina: "Syifaun Nisa Azzahra, S.H", jadwal: "Senin, 15.30 - 17.00 WIB (Masjid)", kontak: "Pengurus Badan Dakwah Islam (BDI)", deskripsi: "Badan Dakwah Islam di Masjid sekolah yang berfokus pada kajian keislaman, seni banjari/hadrah, dan pembinaan akhlak.", perlengkapan: "Busana muslim sopan/seragam sekolah rapi, perlengkapan salat pribadi, Al-Qur'an saku, dan buku catatan.", foto: "assets/img/1795061129_bdi.jpg", pelatih_id: null, status_pelatih: "aktif" },
-    { id: 5, nama: "SEPAKBOLA", pembina: "Belum diatur", jadwal: "Jumat, 15.00 WIB (Lapangan)", kontak: "Pengurus Ekskul Sepakbola", deskripsi: "Pembinaan olahraga sepak bola lapangan besar yang mencakup latihan fisik, penguasaan bola, dan strategi.", perlengkapan: "Sepatu bola (pul), pelindung tulang kering, kaos kaki panjang, jersey/kaos olahraga, dan botol minum.", foto: "assets/img/1795069395_sepak bola.jpg", pelatih_id: null, status_pelatih: "aktif" },
-    { id: 6, nama: "VOLI", pembina: "Amelya Ratu Airin", jadwal: "Kamis, 15.30 - 17.00 WIB (Lap Voli)", kontak: "Pengurus Ekskul Bola Voli", deskripsi: "Ekstrakurikuler olahraga beregu di Lapangan Voli yang melatih teknik passing, service, smash, dan blocking.", perlengkapan: "Sepatu olahraga sol karet, pelindung lutut (knee pad), kaos dan celana olahraga, kaos kaki, dan botol minum.", foto: "assets/img/1795083857_voli.jpg", pelatih_id: null, status_pelatih: "aktif" },
-    { id: 7, nama: "BULU TANGKIS", pembina: "Belum diatur", jadwal: "Kamis, 15.30 - 17.30 WIB (Lap Indor)", kontak: "Pengurus Ekskul Bulu Tangkis", deskripsi: "Ekstrakurikuler olahraga raket yang berfokus pada kelincahan footwork, teknik pukulan lob, smash, dropshot, dan stamina.", perlengkapan: "Raket bulutangkis pribadi, shuttlecock latihan, sepatu olahraga non-marking, pakaian olahraga, dan air minum.", foto: "assets/img/1795061177_bulu tangkis.jpg", pelatih_id: null, status_pelatih: "aktif" },
-    { id: 8, nama: "KUNGFU", pembina: "Belum diatur", jadwal: "Jumat, 15.00 WIB (Lap Indor)", kontak: "Pengurus Ekskul Kungfu", deskripsi: "Seni bela diri tradisional Tiongkok yang melatih kelenturan tubuh, keseimbangan, kecepatan gerak, dan pengendalian diri.", perlengkapan: "Pakaian latihan bela diri/kaos olahraga longgar, celana training, sepatu olahraga ringan, dan air minum.", foto: "assets/img/1795061717_kungfu.jpg", pelatih_id: null, status_pelatih: "aktif" },
-    { id: 9, nama: "PENCAK SILAT", pembina: "Belum diatur", jadwal: "Jumat, 15.00 WIB (Lap Indor)", kontak: "Pengurus Ekskul Pencak Silat", deskripsi: "Seni bela diri tradisional warisan budaya Indonesia yang melatih kelincahan, kekuatan fisik, dan jurus.", perlengkapan: "Seragam latihan pencak silat beserta sabuk, pelindung tubuh (jika memiliki), dan air minum.", foto: "assets/img/1795068664_pencak silat.jpg", pelatih_id: null, status_pelatih: "aktif" },
-    { id: 10, nama: "KARATE", pembina: "Belum diatur", jadwal: "Jumat, 15.00 WIB (Lap Indor)", kontak: "Pengurus Ekskul Karate", deskripsi: "Seni bela diri yang menempa kedisiplinan, ketahanan mental, teknik dasar tangkisan, pukulan, tendangan, serta penguasaan jurus.", perlengkapan: "Seragam karate (gi) beserta sabuk sesuai tingkatan, pelindung tangan/kaki, dan botol air minum.", foto: "assets/img/1795061583_karate.jpg", pelatih_id: null, status_pelatih: "aktif" },
-    { id: 11, nama: "FUTSAL", pembina: "Mohammad Riza Indrayanto", jadwal: "Rabu, 19.00 - 21.00 WIB (Lap Indor)", kontak: "Pengurus Ekskul Futsal", deskripsi: "Ekstrakurikuler olahraga beregu yang berfokus pada kecepatan kontrol bola, akurasi umpan pendek, taktik bertahan dan menyerang.", perlengkapan: "Sepatu futsal, pelindung tulang kering (shin guard), kaos kaki panjang, jersey/kaos olahraga, dan air minum.", foto: "assets/img/1795061490_futsal.jpg", pelatih_id: 4, status_pelatih: "aktif" },
-    { id: 12, nama: "DRUMBAND", pembina: "Belum diatur", jadwal: "Jumat, 15.00 WIB (Lap Indor)", kontak: "Pengurus Ekskul Drumband", deskripsi: "Ekstrakurikuler seni musik perkusi dan tiup yang memadukan keterampilan memainkan alat musik drumband dengan kekompakan baris-berbaris.", perlengkapan: "Pakaian olahraga/latihan yang nyaman, sepatu olahraga bertali, topi latihan, dan botol air minum.", foto: "assets/img/1795061299_drumband.jpg", pelatih_id: null, status_pelatih: "aktif" },
-    { id: 13, nama: "ENGLISH CONVERSATION CLUB", pembina: "Muhammad Syafi'i, S.Pd., M.Si.", jadwal: "Kamis, 15.30 - 17.00 WIB (Lab Workshop DKV)", kontak: "Pengurus ECC SMKN 5 Malang", deskripsi: "Komunitas praktik percakapan bahasa Inggris secara aktif, diskusi, debat, dan storytelling di Lab Workshop DKV.", perlengkapan: "Buku catatan kosakata, alat tulis, kamus saku/aplikasi kamus di smartphone, dan botol minum.", foto: "assets/img/1795061432_ec.jpg", pelatih_id: null, status_pelatih: "aktif" },
-    { id: 14, nama: "TARI TRADISIONAL", pembina: "Abdullah Muhammad Yusuf", jadwal: "Selasa, 15.30 - 17.00 WIB (Aula / Lap Indor)", kontak: "Pengurus Ekskul Tari Tradisional", deskripsi: "Melestarikan seni tari daerah Nusantara dengan melatih keluwesan gerak, wiraga, wirama, dan wirasa.", perlengkapan: "Kain jarik/sampur (selendang tari), pakaian latihan yang nyaman bergerak, kaos kaki, dan botol minum.", foto: "assets/img/1795069432_tari.jpg", pelatih_id: null, status_pelatih: "aktif" },
-    { id: 15, nama: "MODERN DANCE", pembina: "Rendra Orlando S.", jadwal: "Kamis, 15.30 - 17.00 WIB (Lap Indor)", kontak: "Pengurus Ekskul Modern Dance", deskripsi: "Ekstrakurikuler seni tari modern yang melatih kelenturan gerak, energi panggung, dan kekompakan koreografi.", perlengkapan: "Pakaian latihan yang nyaman dan menyerap keringat, sepatu sneakers/dance lentur, dan air minum.", foto: "assets/img/1795061790_dance.jpg", pelatih_id: null, status_pelatih: "aktif" },
-    { id: 16, nama: "KARAWITAN", pembina: "Sony Eko Wandono, S.Sn.", jadwal: "Rabu, 15.30 - 17.00 WIB (Aula Depan)", kontak: "Pengurus Ekskul Karawitan", deskripsi: "Pelestarian seni budaya tradisional Jawa melalui latihan memainkan instrumen gamelan serta olah vokal sinden.", perlengkapan: "Pakaian sopan dan rapi (kaos kaki bersih untuk masuk area gamelan), buku catatan notasi gending, dan alat tulis.", foto: "assets/img/1795061632_karawitan.jpg", pelatih_id: null, status_pelatih: "aktif" },
-    { id: 17, nama: "SENI MUSIK", pembina: "Jeni Astina Siringo", jadwal: "Kamis, 16.00 - 17.30 WIB (Aula Depan)", kontak: "Pengurus Ekskul Seni Musik", deskripsi: "Menyalurkan bakat bermusik siswa dalam memainkan instrumen band maupun akustik dan olah vokal.", perlengkapan: "Alat musik pribadi seperti gitar/bass/stick drum (jika ada), pick gitar, kabel jack, dan catatan lagu.", foto: "assets/img/1795069282_seni musik.jpg", pelatih_id: null, status_pelatih: "aktif" },
-    { id: 18, nama: "BASKET", pembina: "Belum diatur", jadwal: "Rabu & Jumat, 15.30 - 17.30 WIB (Lap. Basket)", kontak: "Pengurus Ekskul Basket", deskripsi: "Ekstrakurikuler olahraga bola basket yang melatih teknik dribbling, passing, shooting, defense, serta kekompakan kerja sama tim.", perlengkapan: "Sepatu basket/olahraga bersol karet, kaos dan celana olahraga, kaos kaki, handuk kecil, dan botol air minum.", foto: "assets/img/1795061030_basketball.jpeg", pelatih_id: null, status_pelatih: "aktif" },
-    { id: 19, nama: "JURNALISTIK", pembina: "R. H. Authonul Muther", jadwal: "Kamis, 15.30 - 17.00 WIB (Auditorium)", kontak: "Pengurus Jurnalistik Vohisma", deskripsi: "Wadah bagi siswa yang gemar menulis, meliput berita, wawancara narasumber, dan mendokumentasikan kegiatan sekolah.", perlengkapan: "Buku catatan kecil (notes), pulpen, smartphone/alat perekam suara, serta laptop (jika ada).", foto: "assets/img/1795061527_jurnalis.jpg", pelatih_id: null, status_pelatih: "aktif" },
-    { id: 20, nama: "PMR", pembina: "M. Sururi Al Faruq, S.Pd.", jadwal: "Selasa, 15.45 - 17.00 WIB (G104)", kontak: "Pengurus PMR Wira SMKN 5 Malang", deskripsi: "Palang Merah Remaja yang membekali siswa dengan keterampilan pertolongan pertama pada kecelakaan (P3K), penanganan medis darurat saat upacara atau acara sekolah, serta kegiatan kemanusiaan.", perlengkapan: "Buku saku kepalangmerahan, alat tulis, slayer/syal PMR, perlengkapan P3K dasar latihan (perban gulung/mitela), dan air minum.", foto: "assets/img/1795069049_1794984776_pmr.png", pelatih_id: null, status_pelatih: "aktif" },
-    { id: 21, nama: "KARYA ILMIAH REMAJA", pembina: "Belum diatur", jadwal: "Jumat, 15.00 WIB (Ruang Kelas)", kontak: "Pengurus KIR SMKN 5 Malang", deskripsi: "Ekstrakurikuler riset dan inovasi bagi siswa yang gemar bereksperimen serta menyusun karya tulis ilmiah.", perlengkapan: "Buku catatan riset, alat tulis, laptop, serta bahan eksperimen sesuai proyek kelompok.", foto: "assets/img/1795061669_kir.jpg", pelatih_id: null, status_pelatih: "aktif" }
+    { id: 1, nama: "PRAMUKA", pembina: "Abdul Syukur Budi Santoso & Putri Mirza Bayyinatur Rosyidah, S.Pd.", jadwal: "Jumat, 13.00 - 15.00 WIB (Lap Indor)", kontak: "Pengurus Dewan Ambalan SMKN 5 Malang", deskripsi: "Pendidikan kepanduan yang membentuk karakter mandiri, kerja sama regu, keterampilan tali-temali, dan pionering.", perlengkapan: "Seragam Pramuka lengkap beserta atribut (hasduk, baret/topi), tali pramuka, buku saku, dan alat tulis.", prestasi: "Aktif berpartisipasi dalam lomba kepramukaan tingkat Kota Malang dan Jawa Timur.", foto: "assets/img/1795069125_pramuka.jpg", pelatih_id: null, status_pelatih: "aktif" },
+    { id: 2, nama: "PASKIBRA", pembina: "Agil Evan, M.Tr.T.", jadwal: "Sabtu, 07.00 - 12.00 WIB (Lap. Basket)", kontak: "Pengurus Paskibra Vohisma", deskripsi: "Pasukan Pengibar Bendera sekolah yang menempa kedisiplinan tinggi, jiwa kepemimpinan, dan ketegasan PBB.", perlengkapan: "Pakaian latihan (kaos olahraga & celana training), sepatu olahraga bertali kuat, topi latihan, dan botol minum.", prestasi: "Juara Lomba Ketangkasan Baris-Berbaris (LKBB) tingkat Malang Raya.", foto: "assets/img/paskii.jpg", pelatih_id: null, status_pelatih: "aktif" },
+    { id: 3, nama: "TEATER", pembina: "Belum diatur", jadwal: "Jumat, 15.00 WIB (Auditorium)", kontak: "Pengurus Teater SMKN 5 Malang", deskripsi: "Wadah olah peran, olah tubuh, olah vokal, penulisan naskah drama, dan tata panggung.", perlengkapan: "Pakaian latihan berwarna gelap yang nyaman bergerak, naskah latihan, alat tulis, dan air minum.", prestasi: "Pementasan karya teater pelajar tingkat Kota Malang.", foto: "assets/img/1795054054_teater.jpg", pelatih_id: null, status_pelatih: "aktif" },
+    { id: 4, nama: "BDI", pembina: "Syifaun Nisa Azzahra, S.H", jadwal: "Senin, 15.30 - 17.00 WIB (Masjid)", kontak: "Pengurus Badan Dakwah Islam (BDI)", deskripsi: "Badan Dakwah Islam di Masjid sekolah yang berfokus pada kajian keislaman, seni banjari/hadrah, dan pembinaan akhlak.", perlengkapan: "Busana muslim sopan/seragam sekolah rapi, perlengkapan salat pribadi, Al-Qur'an saku, dan buku catatan.", prestasi: "Juara Festival Al-Banjari antar pelajar SMK/SMA.", foto: "assets/img/1795061129_bdi.jpg", pelatih_id: null, status_pelatih: "aktif" },
+    { id: 5, nama: "SEPAKBOLA", pembina: "Belum diatur", jadwal: "Jumat, 15.00 WIB (Lapangan)", kontak: "Pengurus Ekskul Sepakbola", deskripsi: "Pembinaan olahraga sepak bola lapangan besar yang mencakup latihan fisik, penguasaan bola, dan strategi.", perlengkapan: "Sepatu bola (pul), pelindung tulang kering, kaos kaki panjang, jersey/kaos olahraga, dan botol minum.", prestasi: "Tim perwakilan sekolah pada turnamen sepak bola pelajar.", foto: "assets/img/1795069395_sepak bola.jpg", pelatih_id: null, status_pelatih: "aktif" },
+    { id: 6, nama: "VOLI", pembina: "Amelya Ratu Airin", jadwal: "Kamis, 15.30 - 17.00 WIB (Lap Voli)", kontak: "Pengurus Ekskul Bola Voli", deskripsi: "Ekstrakurikuler olahraga beregu di Lapangan Voli yang melatih teknik passing, service, smash, dan blocking.", perlengkapan: "Sepatu olahraga sol karet, pelindung lutut (knee pad), kaos dan celana olahraga, kaos kaki, dan botol minum.", prestasi: "Finalis kejuaraan bola voli antar SMK se-Kota Malang.", foto: "assets/img/1795083857_voli.jpg", pelatih_id: null, status_pelatih: "aktif" },
+    { id: 7, nama: "BULU TANGKIS", pembina: "Belum diatur", jadwal: "Kamis, 15.30 - 17.30 WIB (Lap Indor)", kontak: "Pengurus Ekskul Bulu Tangkis", deskripsi: "Ekstrakurikuler olahraga raket yang berfokus pada kelincahan footwork, teknik pukulan lob, smash, dropshot, dan stamina.", perlengkapan: "Raket bulutangkis pribadi, shuttlecock latihan, sepatu olahraga non-marking, pakaian olahraga, dan air minum.", prestasi: "Perwakilan O2SN cabang Bulu Tangkis tingkat Kota Malang.", foto: "assets/img/1795061177_bulu tangkis.jpg", pelatih_id: null, status_pelatih: "aktif" },
+    { id: 8, nama: "KUNGFU", pembina: "Belum diatur", jadwal: "Jumat, 15.00 WIB (Lap Indor)", kontak: "Pengurus Ekskul Kungfu", deskripsi: "Seni bela diri tradisional Tiongkok yang melatih kelenturan tubuh, keseimbangan, kecepatan gerak, dan pengendalian diri.", perlengkapan: "Pakaian latihan bela diri/kaos olahraga longgar, celana training, sepatu olahraga ringan, dan air minum.", prestasi: "Medali kejuaraan Wushu & Kungfu pelajar.", foto: "assets/img/1795061717_kungfu.jpg", pelatih_id: null, status_pelatih: "aktif" },
+    { id: 9, nama: "PENCAK SILAT", pembina: "Belum diatur", jadwal: "Jumat, 15.00 WIB (Lap Indor)", kontak: "Pengurus Ekskul Pencak Silat", deskripsi: "Seni bela diri tradisional warisan budaya Indonesia yang melatih kelincahan, kekuatan fisik, dan jurus.", perlengkapan: "Seragam latihan pencak silat beserta sabuk, pelindung tubuh (jika memiliki), dan air minum.", prestasi: "Juara kejuaraan pencak silat pelajar tingkat Kota Malang.", foto: "assets/img/1795068664_pencak silat.jpg", pelatih_id: null, status_pelatih: "aktif" },
+    { id: 10, nama: "KARATE", pembina: "Belum diatur", jadwal: "Jumat, 15.00 WIB (Lap Indor)", kontak: "Pengurus Ekskul Karate", deskripsi: "Seni bela diri yang menempa kedisiplinan, ketahanan mental, teknik dasar tangkisan, pukulan, tendangan, serta penguasaan jurus.", perlengkapan: "Seragam karate (gi) beserta sabuk sesuai tingkatan, pelindung tangan/kaki, dan botol air minum.", prestasi: "Medali kejuaraan kata dan kumite tingkat provinsi.", foto: "assets/img/1795061583_karate.jpg", pelatih_id: null, status_pelatih: "aktif" },
+    { id: 11, nama: "FUTSAL", pembina: "Mohammad Riza Indrayanto", jadwal: "Rabu, 19.00 - 21.00 WIB (Lap Indor)", kontak: "Pengurus Ekskul Futsal", deskripsi: "Ekstrakurikuler olahraga beregu yang berfokus pada kecepatan kontrol bola, akurasi umpan pendek, taktik bertahan dan menyerang.", perlengkapan: "Sepatu futsal, pelindung tulang kering (shin guard), kaos kaki panjang, jersey/kaos olahraga, dan air minum.", prestasi: "Juara turnamen futsal antar pelajar SMA/SMK Malang Raya.", foto: "assets/img/1795061490_futsal.jpg", pelatih_id: 4, status_pelatih: "aktif" },
+    { id: 12, nama: "DRUMBAND", pembina: "Belum diatur", jadwal: "Jumat, 15.00 WIB (Lap Indor)", kontak: "Pengurus Ekskul Drumband", deskripsi: "Ekstrakurikuler seni musik perkusi dan tiup yang memadukan keterampilan memainkan alat musik drumband dengan kekompakan baris-berbaris.", perlengkapan: "Pakaian olahraga/latihan yang nyaman, sepatu olahraga bertali, topi latihan, dan botol air minum.", prestasi: "Penampil utama pawai budaya dan upacara besar sekolah.", foto: "assets/img/1795061299_drumband.jpg", pelatih_id: null, status_pelatih: "aktif" },
+    { id: 13, nama: "ENGLISH CONVERSATION CLUB", pembina: "Muhammad Syafi'i, S.Pd., M.Si.", jadwal: "Kamis, 15.30 - 17.00 WIB (Lab Workshop DKV)", kontak: "Pengurus ECC SMKN 5 Malang", deskripsi: "Komunitas praktik percakapan bahasa Inggris secara aktif, diskusi, debat, dan storytelling di Lab Workshop DKV.", perlengkapan: "Buku catatan kosakata, alat tulis, kamus saku/aplikasi kamus di smartphone, dan botol minum.", prestasi: "Finalis English Debate & Storytelling Competition tingkat SMK.", foto: "assets/img/1795061432_ec.jpg", pelatih_id: null, status_pelatih: "aktif" },
+    { id: 14, nama: "TARI TRADISIONAL", pembina: "Abdullah Muhammad Yusuf", jadwal: "Selasa, 15.30 - 17.00 WIB (Aula / Lap Indor)", kontak: "Pengurus Ekskul Tari Tradisional", deskripsi: "Melestarikan seni tari daerah Nusantara dengan melatih keluwesan gerak, wiraga, wirama, dan wirasa.", perlengkapan: "Kain jarik/sampur (selendang tari), pakaian latihan yang nyaman bergerak, kaos kaki, dan botol minum.", prestasi: "Juara Festival Tari Tradisional tingkat Kota Malang.", foto: "assets/img/1795069432_tari.jpg", pelatih_id: null, status_pelatih: "aktif" },
+    { id: 15, nama: "MODERN DANCE", pembina: "Rendra Orlando S.", jadwal: "Kamis, 15.30 - 17.00 WIB (Lap Indor)", kontak: "Pengurus Ekskul Modern Dance", deskripsi: "Ekstrakurikuler seni tari modern yang melatih kelenturan gerak, energi panggung, dan kekompakan koreografi.", perlengkapan: "Pakaian latihan yang nyaman dan menyerap keringat, sepatu sneakers/dance lentur, dan air minum.", prestasi: "Juara Dance Competition antar pelajar Malang Raya.", foto: "assets/img/1795061790_dance.jpg", pelatih_id: null, status_pelatih: "aktif" },
+    { id: 16, nama: "KARAWITAN", pembina: "Sony Eko Wandono, S.Sn.", jadwal: "Rabu, 15.30 - 17.00 WIB (Aula Depan)", kontak: "Pengurus Ekskul Karawitan", deskripsi: "Pelestarian seni budaya tradisional Jawa melalui latihan memainkan instrumen gamelan serta olah vokal sinden.", perlengkapan: "Pakaian sopan dan rapi (kaos kaki bersih untuk masuk area gamelan), buku catatan notasi gending, dan alat tulis.", prestasi: "Pengiring resmi acara wisuda dan festival seni budaya daerah.", foto: "assets/img/1795061632_karawitan.jpg", pelatih_id: null, status_pelatih: "aktif" },
+    { id: 17, nama: "SENI MUSIK", pembina: "Jeni Astina Siringo", jadwal: "Kamis, 16.00 - 17.30 WIB (Aula Depan)", kontak: "Pengurus Ekskul Seni Musik", deskripsi: "Menyalurkan bakat bermusik siswa dalam memainkan instrumen band maupun akustik dan olah vokal.", perlengkapan: "Alat musik pribadi seperti gitar/bass/stick drum (jika ada), pick gitar, kabel jack, dan catatan lagu.", prestasi: "Juara Festival Band Pelajar se-Malang Raya.", foto: "assets/img/1795069282_seni musik.jpg", pelatih_id: null, status_pelatih: "aktif" },
+    { id: 18, nama: "BASKET", pembina: "Belum diatur", jadwal: "Rabu & Jumat, 15.30 - 17.30 WIB (Lap. Basket)", kontak: "Pengurus Ekskul Basket", deskripsi: "Ekstrakurikuler olahraga bola basket yang melatih teknik dribbling, passing, shooting, defense, serta kekompakan kerja sama tim.", perlengkapan: "Sepatu basket/olahraga bersol karet, kaos dan celana olahraga, kaos kaki, handuk kecil, dan botol air minum.", prestasi: "Tim perwakilan turnamen bola basket pelajar Kota Malang.", foto: "assets/img/1795061030_basketball.jpeg", pelatih_id: null, status_pelatih: "aktif" },
+    { id: 19, nama: "JURNALISTIK", pembina: "R. H. Authonul Muther", jadwal: "Kamis, 15.30 - 17.00 WIB (Auditorium)", kontak: "Pengurus Jurnalistik Vohisma", deskripsi: "Wadah bagi siswa yang gemar menulis, meliput berita, wawancara narasumber, dan mendokumentasikan kegiatan sekolah.", perlengkapan: "Buku catatan kecil (notes), pulpen, smartphone/alat perekam suara, serta laptop (jika ada).", prestasi: "Tim liputan resmi media sekolah dan majalah dinding Vohisma.", foto: "assets/img/1795061527_jurnalis.jpg", pelatih_id: null, status_pelatih: "aktif" },
+    { id: 20, nama: "PMR", pembina: "M. Sururi Al Faruq, S.Pd.", jadwal: "Selasa, 15.45 - 17.00 WIB (G104)", kontak: "Pengurus PMR Wira SMKN 5 Malang", deskripsi: "Palang Merah Remaja yang membekali siswa dengan keterampilan pertolongan pertama pada kecelakaan (P3K), penanganan medis darurat saat upacara atau acara sekolah, serta kegiatan kemanusiaan.", perlengkapan: "Buku saku kepalangmerahan, alat tulis, slayer/syal PMR, perlengkapan P3K dasar latihan (perban gulung/mitela), dan air minum.", prestasi: "Juara Lomba Pertolongan Pertama & Kepalangmerahan tingkat Wira.", foto: "assets/img/1795069049_1794984776_pmr.png", pelatih_id: null, status_pelatih: "aktif" },
+    { id: 21, nama: "KARYA ILMIAH REMAJA", pembina: "Belum diatur", jadwal: "Jumat, 15.00 WIB (Ruang Kelas)", kontak: "Pengurus KIR SMKN 5 Malang", deskripsi: "Ekstrakurikuler riset dan inovasi bagi siswa yang gemar bereksperimen serta menyusun karya tulis ilmiah.", perlengkapan: "Buku catatan riset, alat tulis, laptop, serta bahan eksperimen sesuai proyek kelompok.", prestasi: "Finalis Lomba Karya Tulis Ilmiah Remaja (LKIR) tingkat Jawa Timur.", foto: "assets/img/1795061669_kir.jpg", pelatih_id: null, status_pelatih: "aktif" }
 ];
 
 function getStore(key, fallback) {
@@ -421,6 +446,7 @@ let ekskuls = getStore('vohisma_ekskuls', DEFAULT_EKSKUL);
 let pendaftarans = getStore('vohisma_pendaftarans', []);
 let notifikasis = getStore('vohisma_notifikasis', []);
 let currentUser = JSON.parse(sessionStorage.getItem('vohisma_session') || 'null');
+let previewRole = null;
 
 function showAlert(targetId, msg, type = 'success') {
     const el = document.getElementById(targetId);
@@ -464,6 +490,7 @@ function handleLogin(e) {
         return;
     }
     currentUser = found;
+    previewRole = null;
     sessionStorage.setItem('vohisma_session', JSON.stringify(found));
     enterApp();
 }
@@ -484,6 +511,7 @@ function handleRegister(e) {
     users.push(newUser);
     setStore('vohisma_users', users);
     currentUser = newUser;
+    previewRole = null;
     sessionStorage.setItem('vohisma_session', JSON.stringify(newUser));
     enterApp();
 }
@@ -505,6 +533,7 @@ function handleForgot(e) {
 
 function logoutUser() {
     currentUser = null;
+    previewRole = null;
     sessionStorage.removeItem('vohisma_session');
     document.getElementById('secApp').classList.remove('active');
     document.getElementById('secAuth').classList.add('active');
@@ -516,31 +545,53 @@ function enterApp() {
     renderDashboard();
 }
 
+function setPreviewMode(role) {
+    previewRole = role;
+    renderDashboard();
+}
+
 // ==================== RENDER DASHBOARD SESUAI ROLE ====================
 function renderDashboard() {
     if (!currentUser) return;
+    const activeRole = (currentUser.role === 'admin' && previewRole) ? previewRole : currentUser.role;
+
     const nav = document.getElementById('mainNavbar');
-    nav.className = 'navbar ' + (currentUser.role === 'admin' ? 'admin' : (currentUser.role === 'pelatih' ? 'pelatih' : ''));
+    nav.className = 'navbar ' + (activeRole === 'admin' ? 'admin' : (activeRole === 'pelatih' ? 'pelatih' : ''));
     document.getElementById('navRoleText').textContent =
-        currentUser.role === 'admin' ? 'Admin Command Center' :
-        (currentUser.role === 'pelatih' ? 'Portal Pelatih' : 'Portal Siswa');
+        activeRole === 'admin' ? 'Admin Command Center' :
+        (activeRole === 'pelatih' ? 'Portal Pelatih' : 'Portal Siswa');
     document.getElementById('navUserName').textContent = `👋 ${currentUser.nama}`;
+
+    const previewBtns = document.getElementById('adminPreviewBtns');
+    previewBtns.style.display = (currentUser.role === 'admin' && !previewRole) ? 'flex' : 'none';
+
+    const bannerArea = document.getElementById('previewBannerArea');
+    if (currentUser.role === 'admin' && previewRole) {
+        bannerArea.innerHTML = `
+            <div class="preview-banner">
+                <span>👀 Mode Pratinjau Admin: Menampilkan halaman sebagai ${previewRole.toUpperCase()}</span>
+                <button type="button" onclick="setPreviewMode(null)" style="background:#fff; color:#92400e; padding:6px 14px; border-radius:50px; font-size:12px; box-shadow:none;">← Kembali ke Admin</button>
+            </div>
+        `;
+    } else {
+        bannerArea.innerHTML = '';
+    }
 
     const myNotifs = notifikasis.filter(n => n.user_id === currentUser.id);
     document.getElementById('notifCountBadge').textContent = myNotifs.length;
 
-    document.getElementById('panelAdmin').style.display = currentUser.role === 'admin' ? 'block' : 'none';
-    document.getElementById('panelPelatih').style.display = currentUser.role === 'pelatih' ? 'block' : 'none';
-    document.getElementById('panelSiswa').style.display = currentUser.role === 'siswa' ? 'block' : 'none';
+    document.getElementById('panelAdmin').style.display = activeRole === 'admin' ? 'block' : 'none';
+    document.getElementById('panelPelatih').style.display = activeRole === 'pelatih' ? 'block' : 'none';
+    document.getElementById('panelSiswa').style.display = activeRole === 'siswa' ? 'block' : 'none';
 
-    if (currentUser.role === 'admin') renderAdminPanel();
-    if (currentUser.role === 'pelatih') renderPelatihPanel();
-    if (currentUser.role === 'siswa') renderSiswaPanel();
+    if (activeRole === 'admin') renderAdminPanel();
+    if (activeRole === 'pelatih') renderPelatihPanel();
+    if (activeRole === 'siswa') renderSiswaPanel();
 
-    renderEkskulGrid();
+    renderEkskulGrid(activeRole);
 }
 
-function renderEkskulGrid() {
+function renderEkskulGrid(activeRole) {
     const q = document.getElementById('searchEkskulInput').value.toLowerCase();
     const grid = document.getElementById('gridEkskulCards');
     grid.innerHTML = '';
@@ -549,7 +600,7 @@ function renderEkskulGrid() {
         if (!e.nama.toLowerCase().includes(q) && !e.jadwal.toLowerCase().includes(q)) return;
 
         let badgeHtml = '';
-        if (currentUser.role === 'siswa') {
+        if (activeRole === 'siswa') {
             const p = pendaftarans.find(x => x.siswa_id === currentUser.id && x.ekskul_id === e.id);
             if (p) badgeHtml = `<span class="badge ${p.status}">${p.status.toUpperCase()}</span>`;
         }
@@ -568,9 +619,9 @@ function renderEkskulGrid() {
                 <p style="font-size:13px; color:#334155; flex:1; line-height:1.5;">${e.deskripsi}</p>
                 <div style="display:flex; gap:8px; margin-top:8px;">
                     <button type="button" class="btn" style="flex:1;" onclick="bukaModalEkskul(${e.id})">
-                        ${currentUser.role === 'admin' ? '✏️ Kelola / Edit' : 'ℹ️ Lihat Detail'}
+                        ${activeRole === 'admin' ? '✏️ Kelola / Edit' : 'ℹ️ Lihat Detail'}
                     </button>
-                    ${currentUser.role === 'admin' ? `<button type="button" class="btn btn-del" onclick="adminHapusEkskul(${e.id})">🗑️</button>` : ''}
+                    ${activeRole === 'admin' ? `<button type="button" class="btn btn-del" onclick="adminHapusEkskul(${e.id})">🗑️</button>` : ''}
                 </div>
             </div>
         `;
@@ -715,7 +766,6 @@ function renderAdminPanel() {
         <div class="stat-bento"><div class="stat-icon amber">🔥</div><div class="stat-info"><h3>${pendaftarans.length}</h3><p>Total Pendaftar</p></div></div>
     `;
 
-    // Pengajuan Pelatih
     const pendingPelatih = ekskuls.filter(e => e.pelatih_id && e.status_pelatih === 'pending');
     const boxPP = document.getElementById('boxPengajuanPelatih');
     if (pendingPelatih.length > 0) {
@@ -737,7 +787,6 @@ function renderAdminPanel() {
         boxPP.style.display = 'none';
     }
 
-    // Tabel Pendaftar Siswa
     const tblP = document.getElementById('tblAdminPendaftar');
     if (pendaftarans.length === 0) {
         tblP.innerHTML = `<tr><td class="text-muted" style="text-align:center;">Belum ada pendaftaran siswa.</td></tr>`;
@@ -764,7 +813,6 @@ function renderAdminPanel() {
         tblP.innerHTML = htmlP;
     }
 
-    // Tabel Users
     let htmlU = `<tr><th>Nama</th><th>NIS / NIP</th><th>Kelas</th><th>Role</th><th>Aksi</th></tr>`;
     users.forEach(u => {
         htmlU += `<tr>
@@ -841,9 +889,10 @@ function adminTambahEkskul(e) {
     const kontak = document.getElementById('newEksKontak').value.trim();
     const deskripsi = document.getElementById('newEksDesk').value.trim();
     const perlengkapan = document.getElementById('newEksPerlengkapan').value.trim();
+    const prestasi = document.getElementById('newEksPrestasi').value.trim();
 
     ekskuls.push({
-        id: Date.now(), nama, pembina, jadwal, kontak, deskripsi, perlengkapan,
+        id: Date.now(), nama, pembina, jadwal, kontak, deskripsi, perlengkapan, prestasi,
         foto: 'assets/img/vohisma.jpg', pelatih_id: null, status_pelatih: 'aktif'
     });
     setStore('vohisma_ekskuls', ekskuls);
@@ -867,10 +916,11 @@ function adminHapusEkskul(eid) {
 function bukaModalEkskul(eid) {
     const e = ekskuls.find(x => x.id === eid);
     if (!e) return;
+    const activeRole = (currentUser.role === 'admin' && previewRole) ? previewRole : currentUser.role;
     document.getElementById('mdFoto').src = e.foto;
     const body = document.getElementById('mdBody');
 
-    if (currentUser.role === 'admin') {
+    if (activeRole === 'admin') {
         body.innerHTML = `
             <h2 style="margin:0 0 12px 0; border:none; padding:0;">✏️ Edit Ekskul: ${e.nama}</h2>
             <div class="form-group"><label>Pembina / Pelatih</label><input type="text" id="edPembina" value="${e.pembina}"></div>
@@ -878,6 +928,7 @@ function bukaModalEkskul(eid) {
             <div class="form-group"><label>📞 Kontak Pengurus Ekskul</label><input type="text" id="edKontak" value="${e.kontak || ''}"></div>
             <div class="form-group"><label>📝 Deskripsi</label><textarea id="edDesk" rows="3">${e.deskripsi}</textarea></div>
             <div class="form-group"><label>🎒 Perlengkapan Dibawa</label><textarea id="edPerlengkapan" rows="2">${e.perlengkapan}</textarea></div>
+            <div class="form-group"><label>🏆 Prestasi</label><textarea id="edPrestasi" rows="2">${e.prestasi || ''}</textarea></div>
             <div style="display:flex; gap:8px;">
                 <button type="button" class="btn" style="flex:1;" onclick="adminSimpanEditEkskul(${e.id})">💾 Simpan Perubahan</button>
                 <button type="button" class="btn btn-kembali" onclick="document.getElementById('modalDetail').style.display='none'">Batal</button>
@@ -885,7 +936,7 @@ function bukaModalEkskul(eid) {
         `;
     } else {
         let actionBtn = '';
-        if (currentUser.role === 'siswa') {
+        if (activeRole === 'siswa') {
             const p = pendaftarans.find(x => x.siswa_id === currentUser.id && x.ekskul_id === e.id);
             if (!p) {
                 actionBtn = `<button type="button" class="btn btn-daftar btn-block" onclick="siswaDaftarEkskul(${e.id})">✨ Daftar Ekskul Ini Sekarang</button>`;
@@ -902,8 +953,9 @@ function bukaModalEkskul(eid) {
             <div class="info-row-modal"><strong>👨‍🏫 Pembina / Pelatih</strong>${e.pembina}</div>
             <div class="info-row-modal"><strong>🗓️ Jadwal & Lokasi Latihan</strong>${e.jadwal}</div>
             <div class="info-row-modal"><strong>📞 Kontak Pengurus Ekskul</strong>${e.kontak || 'Belum diatur'}</div>
-            <div class="info-row-modal"><strong>🎒 Perlengkapan Dibawa</strong>${e.perlengkapan}</div>
-            <div style="margin-top:14px;">${actionBtn}</div>
+            <div class="info-row-modal"><strong>🎒 Perlengkapan yang Perlu Dibawa</strong>${e.perlengkapan}</div>
+            <div class="info-row-modal"><strong>🏆 Prestasi</strong>${e.prestasi || 'Belum ada data prestasi yang dicatat.'}</div>
+            ${actionBtn ? `<div style="margin-top:14px;">${actionBtn}</div>` : ''}
         `;
     }
     document.getElementById('modalDetail').style.display = 'flex';
@@ -916,6 +968,7 @@ function adminSimpanEditEkskul(eid) {
     e.kontak = document.getElementById('edKontak').value;
     e.deskripsi = document.getElementById('edDesk').value;
     e.perlengkapan = document.getElementById('edPerlengkapan').value;
+    e.prestasi = document.getElementById('edPrestasi').value;
     setStore('vohisma_ekskuls', ekskuls);
     document.getElementById('modalDetail').style.display = 'none';
     showAlert('appAlert', `✅ Data ekstrakurikuler <b>${e.nama}</b> berhasil diperbarui!`);
