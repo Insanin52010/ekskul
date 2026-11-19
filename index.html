@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ekstrakurikuler SMKN 5 Malang - Vohisma</title>
+    <link rel="icon" type="image/jpeg" href="assets/img/vohisma.jpg">
+    <link rel="stylesheet" href="assets/style.css">
+    <style>
+        .hero-banner-vercel {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 55%, #ec4899 100%);
+            color: #fff;
+            border-radius: 26px;
+            padding: 36px 32px;
+            margin-bottom: 26px;
+            box-shadow: 0 20px 45px rgba(79, 70, 229, 0.25);
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .hero-banner-vercel h1 {
+            font-size: 28px;
+            margin: 8px 0 10px 0;
+            line-height: 1.25;
+        }
+        .hero-banner-vercel p {
+            max-width: 600px;
+            font-size: 14.5px;
+            opacity: 0.92;
+            line-height: 1.6;
+        }
+        .role-switch-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 16px;
+        }
+        .role-pill {
+            background: rgba(255, 255, 255, 0.18);
+            border: 1.5px solid rgba(255, 255, 255, 0.35);
+            color: #fff;
+            padding: 9px 18px;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .role-pill.active, .role-pill:hover {
+            background: #fff;
+            color: #4f46e5;
+        }
+        .ekskul-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+            gap: 20px;
+            margin-top: 18px;
+        }
+        .ekskul-item-card {
+            background: #fff;
+            border-radius: 22px;
+            overflow: hidden;
+            box-shadow: 0 10px 28px rgba(15, 23, 42, 0.07);
+            border: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .ekskul-item-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 36px rgba(79, 70, 229, 0.14);
+        }
+        .ekskul-item-card img {
+            width: 100%;
+            height: 170px;
+            object-fit: cover;
+        }
+        .ekskul-item-body {
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            gap: 8px;
+        }
+        .ekskul-item-body h3 {
+            font-size: 17px;
+            color: #0f172a;
+            margin: 0;
+        }
+        .ekskul-meta {
+            font-size: 12.5px;
+            color: #64748b;
+            line-height: 1.45;
+        }
+        .ekskul-desc-short {
+            font-size: 13px;
+            color: #334155;
+            line-height: 1.5;
+            flex: 1;
+        }
+        .modal-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+        .modal-card {
+            background: #fff;
+            max-width: 560px;
+            width: 100%;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.3);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .modal-card img {
+            width: 100%;
+            height: 210px;
+            object-fit: cover;
+        }
+        .modal-content {
+            padding: 22px;
+        }
+        .info-row-modal {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 11px 14px;
+            margin-bottom: 10px;
+            font-size: 13px;
+        }
+        .info-row-modal strong {
+            display: block;
+            color: #4f46e5;
+            font-size: 11.5px;
+            margin-bottom: 3px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <div class="nav-brand">
+        <img src="assets/img/vohisma.jpg" alt="Logo SMKN 5 Malang" class="nav-school-logo">
+        <span class="nav-logo">SMKN 5 MALANG</span>
+        <span class="nav-role" id="navRoleBadge">Portal Ekstrakurikuler</span>
+    </div>
+    <div style="display: flex; gap: 10px; align-items: center;">
+        <a href="index.php" style="background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.35); box-shadow: none;">🔐 Login PHP (XAMPP)</a>
+    </div>
+</div>
+
+<div class="container">
+    <div class="hero-banner-vercel">
+        <div>
+            <span style="background: rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 50px; font-size: 11.5px; font-weight: 700;">VOHISMA EXTRACURRICULAR HUB</span>
+            <h1>Sistem Informasi Ekstrakurikuler SMKN 5 Malang</h1>
+            <p>Jelajahi 21 pilihan kegiatan ekstrakurikuler, jadwal latihan, pembina, kontak pengurus, serta perlengkapan kegiatan di SMK Negeri 5 Malang.</p>
+            <div class="role-switch-bar">
+                <button type="button" class="role-pill active" onclick="setMode('siswa', this)">🎓 Mode Siswa</button>
+                <button type="button" class="role-pill" onclick="setMode('pelatih', this)">⚡ Mode Pelatih</button>
+                <button type="button" class="role-pill" onclick="setMode('admin', this)">🛡️ Mode Admin</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-box">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+            <div>
+                <h2 style="margin-bottom: 4px; border: none; padding: 0;">Daftar Ekstrakurikuler (21)</h2>
+                <p class="text-muted" style="font-size: 13px;" id="modeHint">Klik detail untuk melihat jadwal lengkap, perlengkapan, dan kontak pengurus ekskul.</p>
+            </div>
+            <input type="text" id="searchBox" onkeyup="renderEkskul()" placeholder="🔍 Cari nama ekskul atau jadwal..." style="max-width: 280px; margin: 0; border-radius: 50px; padding: 10px 18px;">
+        </div>
+
+        <div class="ekskul-cards-grid" id="ekskulContainer"></div>
+    </div>
+</div>
+
+<!-- Modal Detail Ekskul -->
+<div class="modal-backdrop" id="detailModal" onclick="tutupModal(event)">
+    <div class="modal-card" onclick="event.stopPropagation()">
+        <img id="mFoto" src="assets/img/vohisma.jpg" alt="Foto Ekskul">
+        <div class="modal-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 12px;">
+                <h2 id="mNama" style="margin: 0; border: none; padding: 0; font-size: 20px;"></h2>
+                <button type="button" onclick="document.getElementById('detailModal').style.display='none'" style="background: #e2e8f0; color: #334155; border-radius: 50%; width: 32px; height: 32px; padding: 0; box-shadow: none;">✕</button>
+            </div>
+            <p id="mDeskripsi" style="font-size: 13.5px; color: #334155; line-height: 1.55; margin-bottom: 14px;"></p>
+
+            <div class="info-row-modal">
+                <strong>👨‍🏫 Pembina / Pelatih</strong>
+                <span id="mPembina"></span>
+            </div>
+            <div class="info-row-modal">
+                <strong>🗓️ Jadwal & Lokasi Latihan</strong>
+                <span id="mJadwal"></span>
+            </div>
+            <div class="info-row-modal">
+                <strong>📞 Kontak Pengurus Ekskul</strong>
+                <span id="mKontak"></span>
+            </div>
+            <div class="info-row-modal">
+                <strong>🎒 Perlengkapan yang Perlu Dibawa</strong>
+                <span id="mPerlengkapan"></span>
+            </div>
+
+            <div id="mActionArea" style="margin-top: 14px;"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+const dataEkskul = [
+    { nama: "PRAMUKA", pembina: "Abdul Syukur Budi Santoso & Putri Mirza Bayyinatur Rosyidah, S.Pd.", jadwal: "Jumat, 13.00 - 15.00 WIB (Lap Indor)", kontak: "Pengurus Dewan Ambalan SMKN 5 Malang", deskripsi: "Pendidikan kepanduan yang membentuk karakter mandiri, kerja sama regu, keterampilan tali-temali, dan pionering.", perlengkapan: "Seragam Pramuka lengkap beserta atribut (hasduk, baret/topi), tali pramuka, buku saku, dan alat tulis.", foto: "assets/img/vohisma.jpg" },
+    { nama: "PASKIBRA", pembina: "Agil Evan, M.Tr.T.", jadwal: "Sabtu, 07.00 - 12.00 WIB (Lap. Basket)", kontak: "Pengurus Paskibra Vohisma", deskripsi: "Pasukan Pengibar Bendera sekolah yang menempa kedisiplinan tinggi, jiwa kepemimpinan, dan ketegasan PBB.", perlengkapan: "Pakaian latihan (kaos olahraga & celana training), sepatu olahraga bertali kuat, topi latihan, dan botol minum.", foto: "assets/img/paskii.jpg" },
+    { nama: "TEATER", pembina: "Belum diatur", jadwal: "Jumat, 15.00 WIB (Auditorium)", kontak: "Pengurus Teater SMKN 5 Malang", deskripsi: "Wadah olah peran, olah tubuh, olah vokal, penulisan naskah drama, dan tata panggung.", perlengkapan: "Pakaian latihan berwarna gelap yang nyaman bergerak, naskah latihan, alat tulis, dan air minum.", foto: "assets/img/vohisma.jpg" },
+    { nama: "BDI", pembina: "Syifaun Nisa Azzahra, S.H", jadwal: "Senin, 15.30 - 17.00 WIB (Masjid)", kontak: "Pengurus Badan Dakwah Islam (BDI)", deskripsi: "Badan Dakwah Islam di Masjid sekolah yang berfokus pada kajian keislaman, seni banjari/hadrah, dan pembinaan akhlak.", perlengkapan: "Busana muslim sopan/seragam sekolah rapi, perlengkapan salat pribadi, Al-Qur'an saku, dan buku catatan.", foto: "assets/img/vohisma.jpg" },
+    { nama: "SEPAKBOLA", pembina: "Belum diatur", jadwal: "Jumat, 15.00 WIB (Lapangan)", kontak: "Pengurus Ekskul Sepakbola", deskripsi: "Pembinaan olahraga sepak bola lapangan besar yang mencakup latihan fisik, penguasaan bola, dan strategi.", perlengkapan: "Sepatu bola (pul), pelindung tulang kering, kaos kaki panjang, jersey/kaos olahraga, dan botol minum.", foto: "assets/img/vohisma.jpg" },
+    { nama: "VOLI", pembina: "Amelya Ratu Airin", jadwal: "Kamis, 15.30 - 17.00 WIB (Lap Voli)", kontak: "Pengurus Ekskul Bola Voli", deskripsi: "Ekstrakurikuler olahraga beregu di Lapangan Voli yang melatih teknik passing, service, smash, dan blocking.", perlengkapan: "Sepatu olahraga sol karet, pelindung lutut (knee pad), kaos dan celana olahraga, kaos kaki, dan botol minum.", foto: "assets/img/vohisma.jpg" },
+    { nama: "BULU TANGKIS", pembina: "Belum diatur", jadwal: "Kamis, 15.30 - 17.30 WIB (Lap Indor)", kontak: "Pengurus Ekskul Bulu Tangkis", deskripsi: "Ekstrakurikuler olahraga raket yang berfokus pada kelincahan footwork, teknik pukulan lob, smash, dropshot, dan stamina.", perlengkapan: "Raket bulutangkis pribadi, shuttlecock latihan, sepatu olahraga non-marking, pakaian olahraga, dan air minum.", foto: "assets/img/vohisma.jpg" },
+    { nama: "KUNGFU", pembina: "Belum diatur", jadwal: "Jumat, 15.00 WIB (Lap Indor)", kontak: "Pengurus Ekskul Kungfu", deskripsi: "Seni bela diri tradisional Tiongkok yang melatih kelenturan tubuh, keseimbangan, kecepatan gerak, dan pengendalian diri.", perlengkapan: "Pakaian latihan bela diri/kaos olahraga longgar, celana training, sepatu olahraga ringan, dan air minum.", foto: "assets/img/vohisma.jpg" },
+    { nama: "PENCAK SILAT", pembina: "Belum diatur", jadwal: "Jumat, 15.00 WIB (Lap Indor)", kontak: "Pengurus Ekskul Pencak Silat", deskripsi: "Seni bela diri tradisional warisan budaya Indonesia yang melatih kelincahan, kekuatan fisik, dan jurus.", perlengkapan: "Seragam latihan pencak silat beserta sabuk, pelindung tubuh (jika memiliki), dan air minum.", foto: "assets/img/vohisma.jpg" },
+    { nama: "KARATE", pembina: "Belum diatur", jadwal: "Jumat, 15.00 WIB (Lap Indor)", kontak: "Pengurus Ekskul Karate", deskripsi: "Seni bela diri yang menempa kedisiplinan, ketahanan mental, teknik dasar tangkisan, pukulan, tendangan, serta penguasaan jurus.", perlengkapan: "Seragam karate (gi) beserta sabuk sesuai tingkatan, pelindung tangan/kaki, dan botol air minum.", foto: "assets/img/vohisma.jpg" },
+    { nama: "FUTSAL", pembina: "Mohammad Riza Indrayanto", jadwal: "Rabu, 19.00 - 21.00 WIB (Lap Indor)", kontak: "Pengurus Ekskul Futsal", deskripsi: "Ekstrakurikuler olahraga beregu yang berfokus pada kecepatan kontrol bola, akurasi umpan pendek, taktik bertahan dan menyerang.", perlengkapan: "Sepatu futsal, pelindung tulang kering (shin guard), kaos kaki panjang, jersey/kaos olahraga, dan air minum.", foto: "assets/img/vohisma.jpg" },
+    { nama: "DRUMBAND", pembina: "Belum diatur", jadwal: "Jumat, 15.00 WIB (Lap Indor)", kontak: "Pengurus Ekskul Drumband", deskripsi: "Ekstrakurikuler seni musik perkusi dan tiup yang memadukan keterampilan memainkan alat musik drumband dengan kekompakan baris-berbaris.", perlengkapan: "Pakaian olahraga/latihan yang nyaman, sepatu olahraga bertali, topi latihan, dan botol air minum.", foto: "assets/img/vohisma.jpg" },
+    { nama: "ENGLISH CONVERSATION CLUB", pembina: "Muhammad Syafi'i, S.Pd., M.Si.", jadwal: "Kamis, 15.30 - 17.00 WIB (Lab Workshop DKV)", kontak: "Pengurus ECC SMKN 5 Malang", deskripsi: "Komunitas praktik percakapan bahasa Inggris secara aktif, diskusi, debat, dan storytelling di Lab Workshop DKV.", perlengkapan: "Buku catatan kosakata, alat tulis, kamus saku/aplikasi kamus di smartphone, dan botol minum.", foto: "assets/img/vohisma.jpg" },
+    { nama: "TARI TRADISIONAL", pembina: "Abdullah Muhammad Yusuf", jadwal: "Selasa, 15.30 - 17.00 WIB (Aula / Lap Indor)", kontak: "Pengurus Ekskul Tari Tradisional", deskripsi: "Melestarikan seni tari daerah Nusantara dengan melatih keluwesan gerak, wiraga, wirama, dan wirasa.", perlengkapan: "Kain jarik/sampur (selendang tari), pakaian latihan yang nyaman bergerak, kaos kaki, dan botol minum.", foto: "assets/img/vohisma.jpg" },
+    { nama: "MODERN DANCE", pembina: "Rendra Orlando S.", jadwal: "Kamis, 15.30 - 17.00 WIB (Lap Indor)", kontak: "Pengurus Ekskul Modern Dance", deskripsi: "Ekstrakurikuler seni tari modern yang melatih kelenturan gerak, energi panggung, dan kekompakan koreografi.", perlengkapan: "Pakaian latihan yang nyaman dan menyerap keringat, sepatu sneakers/dance lentur, dan air minum.", foto: "assets/img/vohisma.jpg" },
+    { nama: "KARAWITAN", pembina: "Sony Eko Wandono, S.Sn.", jadwal: "Rabu, 15.30 - 17.00 WIB (Aula Depan)", kontak: "Pengurus Ekskul Karawitan", deskripsi: "Pelestarian seni budaya tradisional Jawa melalui latihan memainkan instrumen gamelan serta olah vokal sinden.", perlengkapan: "Pakaian sopan dan rapi (kaos kaki bersih untuk masuk area gamelan), buku catatan notasi gending, dan alat tulis.", foto: "assets/img/vohisma.jpg" },
+    { nama: "SENI MUSIK", pembina: "Jeni Astina Siringo", jadwal: "Kamis, 16.00 - 17.30 WIB (Aula Depan)", kontak: "Pengurus Ekskul Seni Musik", deskripsi: "Menyalurkan bakat bermusik siswa dalam memainkan instrumen band maupun akustik dan olah vokal.", perlengkapan: "Alat musik pribadi seperti gitar/bass/stick drum (jika ada), pick gitar, kabel jack, dan catatan lagu.", foto: "assets/img/vohisma.jpg" },
+    { nama: "BASKET", pembina: "Belum diatur", jadwal: "Rabu & Jumat, 15.30 - 17.30 WIB (Lap. Basket)", kontak: "Pengurus Ekskul Basket", deskripsi: "Ekstrakurikuler olahraga bola basket yang melatih teknik dribbling, passing, shooting, defense, serta kekompakan kerja sama tim.", perlengkapan: "Sepatu basket/olahraga bersol karet, kaos dan celana olahraga, kaos kaki, handuk kecil, dan botol air minum.", foto: "assets/img/vohisma.jpg" },
+    { nama: "JURNALISTIK", pembina: "R. H. Authonul Muther", jadwal: "Kamis, 15.30 - 17.00 WIB (Auditorium)", kontak: "Pengurus Jurnalistik Vohisma", deskripsi: "Wadah bagi siswa yang gemar menulis, meliput berita, wawancara narasumber, dan mendokumentasikan kegiatan sekolah.", perlengkapan: "Buku catatan kecil (notes), pulpen, smartphone/alat perekam suara, serta laptop (jika ada).", foto: "assets/img/vohisma.jpg" },
+    { nama: "PMR", pembina: "M. Sururi Al Faruq, S.Pd.", jadwal: "Selasa, 15.45 - 17.00 WIB (G104)", kontak: "Pengurus PMR Wira SMKN 5 Malang", deskripsi: "Palang Merah Remaja yang membekali siswa dengan keterampilan pertolongan pertama pada kecelakaan (P3K), penanganan medis darurat saat upacara atau acara sekolah, serta kegiatan kemanusiaan.", perlengkapan: "Buku saku kepalangmerahan, alat tulis, slayer/syal PMR, perlengkapan P3K dasar latihan (perban gulung/mitela), dan air minum.", foto: "assets/img/vohisma.jpg" },
+    { nama: "KARYA ILMIAH REMAJA", pembina: "Belum diatur", jadwal: "Jumat, 15.00 WIB (Ruang Kelas)", kontak: "Pengurus KIR SMKN 5 Malang", deskripsi: "Ekstrakurikuler riset dan inovasi bagi siswa yang gemar bereksperimen serta menyusun karya tulis ilmiah.", perlengkapan: "Buku catatan riset, alat tulis, laptop, serta bahan eksperimen sesuai proyek kelompok.", foto: "assets/img/vohisma.jpg" }
+];
+
+let currentMode = 'siswa';
+let terdaftarList = JSON.parse(localStorage.getItem('ekskul_terdaftar_demo') || '[]');
+
+function setMode(mode, btn) {
+    currentMode = mode;
+    document.querySelectorAll('.role-pill').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+
+    const badge = document.getElementById('navRoleBadge');
+    const hint = document.getElementById('modeHint');
+    if (mode === 'siswa') {
+        badge.textContent = 'Portal Siswa';
+        hint.textContent = 'Mode Siswa: Lihat detail ekskul dan coba simulasi pendaftaran langsung.';
+    } else if (mode === 'pelatih') {
+        badge.textContent = 'Portal Pelatih';
+        hint.textContent = 'Mode Pelatih: Pantau jadwal latihan dan perlengkapan ekstrakurikuler.';
+    } else {
+        badge.textContent = 'Admin Command Center';
+        hint.textContent = 'Mode Admin: Tinjau seluruh data 21 ekstrakurikuler SMKN 5 Malang.';
+    }
+    renderEkskul();
+}
+
+function renderEkskul() {
+    const q = document.getElementById('searchBox').value.toLowerCase();
+    const container = document.getElementById('ekskulContainer');
+    container.innerHTML = '';
+
+    dataEkskul.forEach((item, idx) => {
+        if (!item.nama.toLowerCase().includes(q) && !item.jadwal.toLowerCase().includes(q)) return;
+
+        const sudahDaftar = terdaftarList.includes(item.nama);
+        const card = document.createElement('div');
+        card.className = 'ekskul-item-card';
+        card.innerHTML = `
+            <img src="${item.foto}" onerror="this.src='assets/img/vohisma.jpg'" alt="${item.nama}">
+            <div class="ekskul-item-body">
+                <div style="display:flex; justify-content:space-between; align-items:start; gap:8px;">
+                    <h3>${item.nama}</h3>
+                    ${sudahDaftar && currentMode === 'siswa' ? '<span class="badge diterima" style="font-size:10px;">TERDAFTAR</span>' : ''}
+                </div>
+                <div class="ekskul-meta">🗓️ ${item.jadwal}</div>
+                <div class="ekskul-meta">👨‍🏫 ${item.pembina}</div>
+                <p class="ekskul-desc-short">${item.deskripsi}</p>
+                <button type="button" class="btn btn-block" onclick="bukaDetail(${idx})" style="margin-top:8px;">Lihat Detail</button>
+            </div>
+        `;
+        container.appendChild(card);
+    });
+}
+
+function bukaDetail(idx) {
+    const item = dataEkskul[idx];
+    document.getElementById('mFoto').src = item.foto;
+    document.getElementById('mNama').textContent = item.nama;
+    document.getElementById('mDeskripsi').textContent = item.deskripsi;
+    document.getElementById('mPembina').textContent = item.pembina;
+    document.getElementById('mJadwal').textContent = item.jadwal;
+    document.getElementById('mKontak').textContent = item.kontak;
+    document.getElementById('mPerlengkapan').textContent = item.perlengkapan;
+
+    const actionArea = document.getElementById('mActionArea');
+    if (currentMode === 'siswa') {
+        const sudah = terdaftarList.includes(item.nama);
+        if (sudah) {
+            actionArea.innerHTML = `<div class="alert alert-success" style="text-align:center; margin:0;">✓ Kamu sudah mendaftar di ekskul ${item.nama}</div>`;
+        } else {
+            actionArea.innerHTML = `<button type="button" class="btn btn-daftar btn-block" onclick="daftarDemo('${item.nama}', ${idx})">✨ Daftar Ekskul Ini</button>`;
+        }
+    } else {
+        actionArea.innerHTML = `<div class="alert" style="background:#f1f5f9; color:#334155; text-align:center; margin:0; font-size:12.5px;">Untuk mengelola database & akun secara penuh, jalankan versi PHP melalui XAMPP (<b>index.php</b>).</div>`;
+    }
+
+    document.getElementById('detailModal').style.display = 'flex';
+}
+
+function daftarDemo(nama, idx) {
+    if (!terdaftarList.includes(nama)) {
+        terdaftarList.push(nama);
+        localStorage.setItem('ekskul_terdaftar_demo', JSON.stringify(terdaftarList));
+    }
+    bukaDetail(idx);
+    renderEkskul();
+}
+
+function tutupModal(e) {
+    if (e.target.id === 'detailModal') {
+        document.getElementById('detailModal').style.display = 'none';
+    }
+}
+
+renderEkskul();
+</script>
+</body>
+</html>
