@@ -232,6 +232,7 @@
                     <select id="regRole" onchange="toggleKelasInput()" required>
                         <option value="siswa">Siswa</option>
                         <option value="pelatih">Pelatih / Pembina</option>
+                        <option value="admin">Admin</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -251,9 +252,9 @@
 
             <!-- FORM LUPA PASSWORD -->
             <form id="formForgot" onsubmit="handleForgot(event)" style="display: none;">
-                <p class="text-muted" style="font-size: 13px; margin-bottom: 12px;">Masukkan NIS / NIP akunmu untuk mengatur ulang password baru.</p>
+                <p class="text-muted" style="font-size: 13px; margin-bottom: 12px;">Masukkan NIS / NIP / ID akunmu untuk mengatur ulang password baru.</p>
                 <div class="form-group">
-                    <label>NIS / NIP Terdaftar</label>
+                    <label>NIS / NIP / ID Terdaftar</label>
                     <input type="text" id="forgotId" placeholder="Contoh: 1001" required>
                 </div>
                 <div class="form-group">
@@ -471,7 +472,12 @@ function switchAuthTab(tab) {
 function toggleKelasInput() {
     const role = document.getElementById('regRole').value;
     document.getElementById('regKelasGroup').style.display = role === 'siswa' ? 'block' : 'none';
-    document.getElementById('regIdLabel').textContent = role === 'siswa' ? 'NIS (Nomor Induk Siswa)' : 'NIP / ID Pelatih';
+    document.getElementById('regIdLabel').textContent =
+        role === 'siswa' ? 'NIS (Nomor Induk Siswa)' :
+        (role === 'pelatih' ? 'NIP / ID Pelatih' : 'Username / ID Admin');
+    document.getElementById('regId').placeholder =
+        role === 'siswa' ? 'Masukkan NIS unik' :
+        (role === 'pelatih' ? 'Masukkan NIP / ID Pelatih' : 'Masukkan Username / ID Admin');
 }
 
 function quickLogin(id, pass) {
@@ -486,7 +492,7 @@ function handleLogin(e) {
     const pass = document.getElementById('loginPass').value;
     const found = users.find(u => u.nomor_induk === id && u.password === pass);
     if (!found) {
-        showAlert('authAlert', '❌ NIS/NIP atau Password salah!', 'danger');
+        showAlert('authAlert', '❌ NIS/NIP/Username atau Password salah!', 'danger');
         return;
     }
     currentUser = found;
@@ -504,7 +510,7 @@ function handleRegister(e) {
     const password = document.getElementById('regPass').value;
 
     if (users.some(u => u.nomor_induk === nomor_induk)) {
-        showAlert('authAlert', '⚠️ NIS / NIP sudah terdaftar!', 'danger');
+        showAlert('authAlert', '⚠️ NIS / NIP / Username sudah terdaftar!', 'danger');
         return;
     }
     const newUser = { id: Date.now(), nama, nomor_induk, kelas, password, role };
@@ -522,7 +528,7 @@ function handleForgot(e) {
     const newPass = document.getElementById('forgotNewPass').value;
     const idx = users.findIndex(u => u.nomor_induk === id);
     if (idx === -1) {
-        showAlert('authAlert', '❌ NIS / NIP tidak ditemukan!', 'danger');
+        showAlert('authAlert', '❌ Akun tidak ditemukan!', 'danger');
         return;
     }
     users[idx].password = newPass;
@@ -813,7 +819,7 @@ function renderAdminPanel() {
         tblP.innerHTML = htmlP;
     }
 
-    let htmlU = `<tr><th>Nama</th><th>NIS / NIP</th><th>Kelas</th><th>Role</th><th>Aksi</th></tr>`;
+    let htmlU = `<tr><th>Nama</th><th>NIS / NIP / ID</th><th>Kelas</th><th>Role</th><th>Aksi</th></tr>`;
     users.forEach(u => {
         htmlU += `<tr>
             <td><strong>${u.nama}</strong></td>
