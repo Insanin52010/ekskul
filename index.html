@@ -288,7 +288,7 @@
             <form id="formLogin" onsubmit="handleLogin(event)">
                 <div class="form-group">
                     <label>NIS / NIP / Username Admin</label>
-                    <input type="text" id="loginId" placeholder="Masukkan NIS, NIP, atau admin" required>
+                    <input type="text" id="loginId" placeholder="Contoh: 14699/1801.063 atau admin" required>
                 </div>
                 <div class="form-group">
                     <label>Password</label>
@@ -307,7 +307,7 @@
                 <div class="demo-accounts-box">
                     <div style="font-weight: 700; margin-bottom: 6px; color: #1e293b;">⚡ Akses Cepat Akun:</div>
                     <button type="button" class="btn" onclick="quickLogin('admin', '123456')">🛡️ Admin</button>
-                    <button type="button" class="btn btn-daftar" onclick="quickLogin('1001', '12345')">🎓 Siswa</button>
+                    <button type="button" class="btn btn-daftar" onclick="quickLogin('14699/1801.063', '12345')">🎓 Siswa</button>
                     <button type="button" style="background:#eab308; color:#422006;" onclick="quickLogin('2001', '12345')">⚡ Pelatih</button>
                 </div>
             </form>
@@ -316,7 +316,7 @@
             <form id="formRegister" onsubmit="handleRegister(event)" style="display: none;">
                 <div class="form-group">
                     <label>Nama Lengkap</label>
-                    <input type="text" id="regNama" placeholder="Contoh: Ahmad Fauzi" required>
+                    <input type="text" id="regNama" placeholder="Contoh: Insanin Kamilia" required>
                 </div>
 
                 <div class="form-group">
@@ -330,7 +330,7 @@
 
                 <div class="form-group">
                     <label id="regIdLabel">NIS (Nomor Induk Siswa)</label>
-                    <input type="text" id="regId" placeholder="Masukkan NIS unik" required>
+                    <input type="text" id="regId" placeholder="Contoh: 14699/1801.063" required>
                 </div>
 
                 <div class="form-group" id="regKelasGroup">
@@ -344,13 +344,6 @@
                             <option value="X TKJ 2">X TKJ 2</option>
                             <option value="X DKV 1">X DKV 1</option>
                             <option value="X DKV 2">X DKV 2</option>
-                            <option value="X ANIMASI 1">X ANIMASI 1</option>
-                            <option value="X ANIMASI 2">X ANIMASI 2</option>
-                            <option value="X TATA BUSANA 1">X TATA BUSANA 1</option>
-                            <option value="X TATA BUSANA 2">X TATA BUSANA 2</option>
-                            <option value="X KRIYA KAYU">X KRIYA KAYU</option>
-                            <option value="X KRIYA KERAMIK">X KRIYA KERAMIK</option>
-                            <option value="X KRIYA TEKSTIL">X KRIYA TEKSTIL</option>
                         </optgroup>
                         <optgroup label="Kelas XI">
                             <option value="XI RPL 1">XI RPL 1</option>
@@ -359,28 +352,12 @@
                             <option value="XI TKJ 2">XI TKJ 2</option>
                             <option value="XI DKV 1">XI DKV 1</option>
                             <option value="XI DKV 2">XI DKV 2</option>
-                            <option value="XI ANIMASI 1">XI ANIMASI 1</option>
-                            <option value="XI ANIMASI 2">XI ANIMASI 2</option>
-                            <option value="XI TATA BUSANA 1">XI TATA BUSANA 1</option>
-                            <option value="XI TATA BUSANA 2">XI TATA BUSANA 2</option>
-                            <option value="XI KRIYA KAYU">XI KRIYA KAYU</option>
-                            <option value="XI KRIYA KERAMIK">XI KRIYA KERAMIK</option>
-                            <option value="XI KRIYA TEKSTIL">XI KRIYA TEKSTIL</option>
                         </optgroup>
                         <optgroup label="Kelas XII">
                             <option value="XII RPL 1">XII RPL 1</option>
                             <option value="XII RPL 2">XII RPL 2</option>
                             <option value="XII TKJ 1">XII TKJ 1</option>
                             <option value="XII TKJ 2">XII TKJ 2</option>
-                            <option value="XII DKV 1">XII DKV 1</option>
-                            <option value="XII DKV 2">XII DKV 2</option>
-                            <option value="XII ANIMASI 1">XII ANIMASI 1</option>
-                            <option value="XII ANIMASI 2">XII ANIMASI 2</option>
-                            <option value="XII TATA BUSANA 1">XII TATA BUSANA 1</option>
-                            <option value="XII TATA BUSANA 2">XII TATA BUSANA 2</option>
-                            <option value="XII KRIYA KAYU">XII KRIYA KAYU</option>
-                            <option value="XII KRIYA KERAMIK">XII KRIYA KERAMIK</option>
-                            <option value="XII KRIYA TEKSTIL">XII KRIYA TEKSTIL</option>
                         </optgroup>
                     </select>
                 </div>
@@ -427,7 +404,7 @@
                 <p class="text-muted" style="font-size: 13px; margin-bottom: 12px;">Masukkan NIS / NIP / ID akunmu untuk mengatur ulang password baru.</p>
                 <div class="form-group">
                     <label>NIS / NIP / ID Terdaftar</label>
-                    <input type="text" id="forgotId" placeholder="Contoh: 1001" required>
+                    <input type="text" id="forgotId" placeholder="Contoh: 14699/1801.063" required>
                 </div>
                 <div class="form-group">
                     <label>Password Baru</label>
@@ -594,7 +571,6 @@ window.addEventListener('mousemove', (e) => {
     mouse.y = e.clientY;
     mouse.active = true;
     
-    // Buat partikel baru mengikuti pergerakan kursor
     for (let i = 0; i < 2; i++) {
         particles.push({
             x: mouse.x,
@@ -652,9 +628,8 @@ function togglePassVisibility(inputId, btn) {
 
 const DEFAULT_USERS = [
     { id: 1, nama: "Administrator SMKN 5", nomor_induk: "admin", kelas: "-", jenis_kelamin: "Laki-laki", alamat: "Jl. Ikan Piranha Atas, Malang", password: "123456", role: "admin" },
-    { id: 2, nama: "Ami", nomor_induk: "20", kelas: "-", jenis_kelamin: "Perempuan", alamat: "Malang", password: "12345", role: "admin" },
-    { id: 3, nama: "Rizky Pratama", nomor_induk: "1001", kelas: "XI RPL 1", jenis_kelamin: "Laki-laki", alamat: "Jl. Soekarno Hatta No. 12, Malang", password: "12345", role: "siswa" },
-    { id: 4, nama: "Mohammad Riza Indrayanto", nomor_induk: "2001", kelas: "-", jenis_kelamin: "Laki-laki", alamat: "Jl. Sulfat Agung, Malang", password: "12345", role: "pelatih" }
+    { id: 2, nama: "Insanin Kamilia An Nisaa", nomor_induk: "14699/1801.063", kelas: "XI RPL 2", jenis_kelamin: "Perempuan", alamat: "Malang", password: "12345", role: "siswa" },
+    { id: 3, nama: "Mohammad Riza Indrayanto", nomor_induk: "2001", kelas: "-", jenis_kelamin: "Laki-laki", alamat: "Jl. Sulfat Agung, Malang", password: "12345", role: "pelatih" }
 ];
 
 const DEFAULT_EKSKUL = [
@@ -668,7 +643,7 @@ const DEFAULT_EKSKUL = [
     { id: 8, nama: "KUNGFU", pembina: "Belum diatur", jadwal: "Jumat, 15.00 WIB (Lap Indor)", kontak: "Pengurus Ekskul Kungfu", deskripsi: "Seni bela diri tradisional Tiongkok yang melatih kelenturan tubuh, keseimbangan, kecepatan gerak, dan pengendalian diri.", perlengkapan: "Pakaian latihan bela diri/kaos olahraga longgar, celana training, sepatu olahraga ringan, dan air minum.", prestasi: "Medali kejuaraan Wushu & Kungfu pelajar.", foto: "assets/img/1795061717_kungfu.jpg", pelatih_id: null, status_pelatih: "aktif" },
     { id: 9, nama: "PENCAK SILAT", pembina: "Belum diatur", jadwal: "Jumat, 15.00 WIB (Lap Indor)", kontak: "Pengurus Ekskul Pencak Silat", deskripsi: "Seni bela diri tradisional warisan budaya Indonesia yang melatih kelincahan, kekuatan fisik, dan jurus.", perlengkapan: "Seragam latihan pencak silat beserta sabuk, pelindung tubuh (jika memiliki), dan air minum.", prestasi: "Juara kejuaraan pencak silat pelajar tingkat Kota Malang.", foto: "assets/img/1795068664_pencak silat.jpg", pelatih_id: null, status_pelatih: "aktif" },
     { id: 10, nama: "KARATE", pembina: "Belum diatur", jadwal: "Jumat, 15.00 WIB (Lap Indor)", kontak: "Pengurus Ekskul Karate", deskripsi: "Seni bela diri yang menempa kedisiplinan, ketahanan mental, teknik dasar tangkisan, pukulan, tendangan, serta penguasaan jurus.", perlengkapan: "Seragam karate (gi) beserta sabuk sesuai tingkatan, pelindung tangan/kaki, dan botol air minum.", prestasi: "Medali kejuaraan kata dan kumite tingkat provinsi.", foto: "assets/img/1795061583_karate.jpg", pelatih_id: null, status_pelatih: "aktif" },
-    { id: 11, nama: "FUTSAL", pembina: "Mohammad Riza Indrayanto", jadwal: "Rabu, 19.00 - 21.00 WIB (Lap Indor)", kontak: "Pengurus Ekskul Futsal", deskripsi: "Ekstrakurikuler olahraga beregu yang berfokus pada kecepatan kontrol bola, akurasi umpan pendek, taktik bertahan dan menyerang.", perlengkapan: "Sepatu futsal, pelindung tulang kering (shin guard), kaos kaki panjang, jersey/kaos olahraga, dan air minum.", prestasi: "Juara turnamen futsal antar pelajar SMA/SMK Malang Raya.", foto: "assets/img/1795061490_futsal.jpg", pelatih_id: 4, status_pelatih: "aktif" },
+    { id: 11, nama: "FUTSAL", pembina: "Mohammad Riza Indrayanto", jadwal: "Rabu, 19.00 - 21.00 WIB (Lap Indor)", kontak: "Pengurus Ekskul Futsal", deskripsi: "Ekstrakurikuler olahraga beregu yang berfokus pada kecepatan kontrol bola, akurasi umpan pendek, taktik bertahan dan menyerang.", perlengkapan: "Sepatu futsal, pelindung tulang kering (shin guard), kaos kaki panjang, jersey/kaos olahraga, dan air minum.", prestasi: "Juara turnamen futsal antar pelajar SMA/SMK Malang Raya.", foto: "assets/img/1795061490_futsal.jpg", pelatih_id: 3, status_pelatih: "aktif" },
     { id: 12, nama: "DRUMBAND", pembina: "Belum diatur", jadwal: "Jumat, 15.00 WIB (Lap Indor)", kontak: "Pengurus Ekskul Drumband", deskripsi: "Ekstrakurikuler seni musik perkusi dan tiup yang memadukan keterampilan memainkan alat musik drumband dengan kekompakan baris-berbaris.", perlengkapan: "Pakaian olahraga/latihan yang nyaman, sepatu olahraga bertali, topi latihan, dan botol air minum.", prestasi: "Penampil utama pawai budaya dan upacara besar sekolah.", foto: "assets/img/1795061299_drumband.jpg", pelatih_id: null, status_pelatih: "aktif" },
     { id: 13, nama: "ENGLISH CONVERSATION CLUB", pembina: "Muhammad Syafi'i, S.Pd., M.Si.", jadwal: "Kamis, 15.30 - 17.00 WIB (Lab Workshop DKV)", kontak: "Pengurus ECC SMKN 5 Malang", deskripsi: "Komunitas praktik percakapan bahasa Inggris secara aktif, diskusi, debat, dan storytelling di Lab Workshop DKV.", perlengkapan: "Buku catatan kosakata, alat tulis, kamus saku/aplikasi kamus di smartphone, dan botol minum.", prestasi: "Finalis English Debate & Storytelling Competition tingkat SMK.", foto: "assets/img/1795061432_ec.jpg", pelatih_id: null, status_pelatih: "aktif" },
     { id: 14, nama: "TARI TRADISIONAL", pembina: "Abdullah Muhammad Yusuf", jadwal: "Selasa, 15.30 - 17.00 WIB (Aula / Lap Indor)", kontak: "Pengurus Ekskul Tari Tradisional", deskripsi: "Melestarikan seni tari daerah Nusantara dengan melatih keluwesan gerak, wiraga, wirama, dan wirasa.", perlengkapan: "Kain jarik/sampur (selendang tari), pakaian latihan yang nyaman bergerak, kaos kaki, dan botol minum.", prestasi: "Juara Festival Tari Tradisional tingkat Kota Malang.", foto: "assets/img/1795069432_tari.jpg", pelatih_id: null, status_pelatih: "aktif" },
@@ -730,7 +705,7 @@ function toggleKelasInput() {
         kelasGroup.style.display = 'block';
         kelasSelect.setAttribute('required', 'required');
         document.getElementById('regIdLabel').textContent = 'NIS (Nomor Induk Siswa)';
-        document.getElementById('regId').placeholder = 'Masukkan NIS unik';
+        document.getElementById('regId').placeholder = 'Contoh: 14699/1801.063';
     } else if (role === 'pelatih') {
         kelasGroup.style.display = 'none';
         kelasSelect.removeAttribute('required');
