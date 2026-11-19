@@ -22,7 +22,7 @@
             border-radius: 28px;
             box-shadow: 0 25px 60px rgba(79, 70, 229, 0.18);
             border: 1px solid rgba(255, 255, 255, 0.8);
-            max-width: 440px;
+            max-width: 470px;
             width: 100%;
             padding: 34px 30px;
         }
@@ -227,6 +227,7 @@
                     <label>Nama Lengkap</label>
                     <input type="text" id="regNama" placeholder="Contoh: Ahmad Fauzi" required>
                 </div>
+
                 <div class="form-group">
                     <label>Daftar Sebagai</label>
                     <select id="regRole" onchange="toggleKelasInput()" required>
@@ -235,18 +236,83 @@
                         <option value="admin">Admin</option>
                     </select>
                 </div>
+
                 <div class="form-group">
                     <label id="regIdLabel">NIS (Nomor Induk Siswa)</label>
                     <input type="text" id="regId" placeholder="Masukkan NIS unik" required>
                 </div>
+
                 <div class="form-group" id="regKelasGroup">
-                    <label>Kelas</label>
-                    <input type="text" id="regKelas" placeholder="Contoh: XI RPL 1">
+                    <label>Pilih Kelas</label>
+                    <select id="regKelas">
+                        <option value="">-- Pilih Kelas --</option>
+                        <optgroup label="Kelas X">
+                            <option value="X RPL 1">X RPL 1</option>
+                            <option value="X RPL 2">X RPL 2</option>
+                            <option value="X TKJ 1">X TKJ 1</option>
+                            <option value="X TKJ 2">X TKJ 2</option>
+                            <option value="X DKV 1">X DKV 1</option>
+                            <option value="X DKV 2">X DKV 2</option>
+                            <option value="X ANIMASI 1">X ANIMASI 1</option>
+                            <option value="X ANIMASI 2">X ANIMASI 2</option>
+                            <option value="X TATA BUSANA 1">X TATA BUSANA 1</option>
+                            <option value="X TATA BUSANA 2">X TATA BUSANA 2</option>
+                            <option value="X KRIYA KAYU">X KRIYA KAYU</option>
+                            <option value="X KRIYA KERAMIK">X KRIYA KERAMIK</option>
+                            <option value="X KRIYA TEKSTIL">X KRIYA TEKSTIL</option>
+                        </optgroup>
+                        <optgroup label="Kelas XI">
+                            <option value="XI RPL 1">XI RPL 1</option>
+                            <option value="XI RPL 2">XI RPL 2</option>
+                            <option value="XI TKJ 1">XI TKJ 1</option>
+                            <option value="XI TKJ 2">XI TKJ 2</option>
+                            <option value="XI DKV 1">XI DKV 1</option>
+                            <option value="XI DKV 2">XI DKV 2</option>
+                            <option value="XI ANIMASI 1">XI ANIMASI 1</option>
+                            <option value="XI ANIMASI 2">XI ANIMASI 2</option>
+                            <option value="XI TATA BUSANA 1">XI TATA BUSANA 1</option>
+                            <option value="XI TATA BUSANA 2">XI TATA BUSANA 2</option>
+                            <option value="XI KRIYA KAYU">XI KRIYA KAYU</option>
+                            <option value="XI KRIYA KERAMIK">XI KRIYA KERAMIK</option>
+                            <option value="XI KRIYA TEKSTIL">XI KRIYA TEKSTIL</option>
+                        </optgroup>
+                        <optgroup label="Kelas XII">
+                            <option value="XII RPL 1">XII RPL 1</option>
+                            <option value="XII RPL 2">XII RPL 2</option>
+                            <option value="XII TKJ 1">XII TKJ 1</option>
+                            <option value="XII TKJ 2">XII TKJ 2</option>
+                            <option value="XII DKV 1">XII DKV 1</option>
+                            <option value="XII DKV 2">XII DKV 2</option>
+                            <option value="XII ANIMASI 1">XII ANIMASI 1</option>
+                            <option value="XII ANIMASI 2">XII ANIMASI 2</option>
+                            <option value="XII TATA BUSANA 1">XII TATA BUSANA 1</option>
+                            <option value="XII TATA BUSANA 2">XII TATA BUSANA 2</option>
+                            <option value="XII KRIYA KAYU">XII KRIYA KAYU</option>
+                            <option value="XII KRIYA KERAMIK">XII KRIYA KERAMIK</option>
+                            <option value="XII KRIYA TEKSTIL">XII KRIYA TEKSTIL</option>
+                        </optgroup>
+                    </select>
                 </div>
+
+                <div class="form-group">
+                    <label>Jenis Kelamin</label>
+                    <select id="regGender" required>
+                        <option value="">-- Pilih Jenis Kelamin --</option>
+                        <option value="Laki-laki">Laki-laki</option>
+                        <option value="Perempuan">Perempuan</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Alamat Lengkap</label>
+                    <textarea id="regAlamat" rows="2" placeholder="Masukkan alamat lengkap tempat tinggal" required></textarea>
+                </div>
+
                 <div class="form-group">
                     <label>Buat Password</label>
                     <input type="password" id="regPass" placeholder="Minimal 4 karakter" required>
                 </div>
+
                 <button type="submit" class="btn btn-daftar btn-block">✨ Buat Akun & Masuk</button>
             </form>
 
@@ -400,10 +466,10 @@
 
 <script>
 const DEFAULT_USERS = [
-    { id: 1, nama: "Administrator SMKN 5", nomor_induk: "admin", kelas: "-", password: "123456", role: "admin" },
-    { id: 2, nama: "Ami", nomor_induk: "20", kelas: "-", password: "12345", role: "admin" },
-    { id: 3, nama: "Rizky Pratama", nomor_induk: "1001", kelas: "XI RPL 1", password: "12345", role: "siswa" },
-    { id: 4, nama: "Mohammad Riza Indrayanto", nomor_induk: "2001", kelas: "-", password: "12345", role: "pelatih" }
+    { id: 1, nama: "Administrator SMKN 5", nomor_induk: "admin", kelas: "-", jenis_kelamin: "Laki-laki", alamat: "Jl. Ikan Piranha Atas, Malang", password: "123456", role: "admin" },
+    { id: 2, nama: "Ami", nomor_induk: "20", kelas: "-", jenis_kelamin: "Perempuan", alamat: "Malang", password: "12345", role: "admin" },
+    { id: 3, nama: "Rizky Pratama", nomor_induk: "1001", kelas: "XI RPL 1", jenis_kelamin: "Laki-laki", alamat: "Jl. Soekarno Hatta No. 12, Malang", password: "12345", role: "siswa" },
+    { id: 4, nama: "Mohammad Riza Indrayanto", nomor_induk: "2001", kelas: "-", jenis_kelamin: "Laki-laki", alamat: "Jl. Sulfat Agung, Malang", password: "12345", role: "pelatih" }
 ];
 
 const DEFAULT_EKSKUL = [
@@ -467,17 +533,30 @@ function switchAuthTab(tab) {
     document.getElementById('formForgot').style.display = tab === 'forgot' ? 'block' : 'none';
     document.getElementById('tabLoginBtn').classList.toggle('active', tab === 'login');
     document.getElementById('tabRegBtn').classList.toggle('active', tab === 'register');
+    if (tab === 'register') toggleKelasInput();
 }
 
 function toggleKelasInput() {
     const role = document.getElementById('regRole').value;
-    document.getElementById('regKelasGroup').style.display = role === 'siswa' ? 'block' : 'none';
-    document.getElementById('regIdLabel').textContent =
-        role === 'siswa' ? 'NIS (Nomor Induk Siswa)' :
-        (role === 'pelatih' ? 'NIP / ID Pelatih' : 'Username / ID Admin');
-    document.getElementById('regId').placeholder =
-        role === 'siswa' ? 'Masukkan NIS unik' :
-        (role === 'pelatih' ? 'Masukkan NIP / ID Pelatih' : 'Masukkan Username / ID Admin');
+    const kelasGroup = document.getElementById('regKelasGroup');
+    const kelasSelect = document.getElementById('regKelas');
+
+    if (role === 'siswa') {
+        kelasGroup.style.display = 'block';
+        kelasSelect.setAttribute('required', 'required');
+        document.getElementById('regIdLabel').textContent = 'NIS (Nomor Induk Siswa)';
+        document.getElementById('regId').placeholder = 'Masukkan NIS unik';
+    } else if (role === 'pelatih') {
+        kelasGroup.style.display = 'none';
+        kelasSelect.removeAttribute('required');
+        document.getElementById('regIdLabel').textContent = 'NIP / ID Pelatih';
+        document.getElementById('regId').placeholder = 'Masukkan NIP / ID Pelatih';
+    } else {
+        kelasGroup.style.display = 'none';
+        kelasSelect.removeAttribute('required');
+        document.getElementById('regIdLabel').textContent = 'Username / ID Admin';
+        document.getElementById('regId').placeholder = 'Masukkan Username / ID Admin';
+    }
 }
 
 function quickLogin(id, pass) {
@@ -506,14 +585,30 @@ function handleRegister(e) {
     const nama = document.getElementById('regNama').value.trim();
     const role = document.getElementById('regRole').value;
     const nomor_induk = document.getElementById('regId').value.trim();
-    const kelas = role === 'siswa' ? (document.getElementById('regKelas').value.trim() || '-') : '-';
+    const kelas = role === 'siswa' ? (document.getElementById('regKelas').value || '-') : '-';
+    const jenis_kelamin = document.getElementById('regGender').value;
+    const alamat = document.getElementById('regAlamat').value.trim();
     const password = document.getElementById('regPass').value;
 
+    if (role === 'siswa' && (!kelas || kelas === '-')) {
+        showAlert('authAlert', '⚠️ Silakan pilih kelas terlebih dahulu!', 'danger');
+        return;
+    }
     if (users.some(u => u.nomor_induk === nomor_induk)) {
         showAlert('authAlert', '⚠️ NIS / NIP / Username sudah terdaftar!', 'danger');
         return;
     }
-    const newUser = { id: Date.now(), nama, nomor_induk, kelas, password, role };
+
+    const newUser = {
+        id: Date.now(),
+        nama,
+        nomor_induk,
+        kelas,
+        jenis_kelamin,
+        alamat,
+        password,
+        role
+    };
     users.push(newUser);
     setStore('vohisma_users', users);
     currentUser = newUser;
@@ -718,7 +813,7 @@ function renderPelatihPanel() {
         tbl.innerHTML = `<tr><td class="text-muted" style="text-align:center;">Belum ada siswa yang mendaftar di ekskul ini.</td></tr>`;
         return;
     }
-    let html = `<tr><th>Nama Siswa</th><th>NIS</th><th>Kelas</th><th>Status</th><th>Aksi</th></tr>`;
+    let html = `<tr><th>Nama Siswa</th><th>NIS</th><th>Kelas</th><th>L/P</th><th>Alamat</th><th>Status</th><th>Aksi</th></tr>`;
     listDaftar.forEach(p => {
         const sw = users.find(u => u.id === p.siswa_id);
         if (!sw) return;
@@ -726,6 +821,8 @@ function renderPelatihPanel() {
             <td><strong>${sw.nama}</strong></td>
             <td>${sw.nomor_induk}</td>
             <td>${sw.kelas}</td>
+            <td>${sw.jenis_kelamin || '-'}</td>
+            <td>${sw.alamat || '-'}</td>
             <td><span class="badge ${p.status}">${p.status.toUpperCase()}</span></td>
             <td>
                 ${p.status === 'pending' ? `
@@ -797,7 +894,7 @@ function renderAdminPanel() {
     if (pendaftarans.length === 0) {
         tblP.innerHTML = `<tr><td class="text-muted" style="text-align:center;">Belum ada pendaftaran siswa.</td></tr>`;
     } else {
-        let htmlP = `<tr><th>Nama Siswa</th><th>Kelas</th><th>Ekskul</th><th>Status</th><th>Aksi</th></tr>`;
+        let htmlP = `<tr><th>Nama Siswa</th><th>Kelas</th><th>L/P</th><th>Ekskul</th><th>Status</th><th>Aksi</th></tr>`;
         pendaftarans.forEach(p => {
             const sw = users.find(u => u.id === p.siswa_id);
             const eks = ekskuls.find(e => e.id === p.ekskul_id);
@@ -805,6 +902,7 @@ function renderAdminPanel() {
             htmlP += `<tr>
                 <td><strong>${sw.nama}</strong> (${sw.nomor_induk})</td>
                 <td>${sw.kelas}</td>
+                <td>${sw.jenis_kelamin || '-'}</td>
                 <td>${eks.nama}</td>
                 <td><span class="badge ${p.status}">${p.status.toUpperCase()}</span></td>
                 <td>
@@ -819,12 +917,14 @@ function renderAdminPanel() {
         tblP.innerHTML = htmlP;
     }
 
-    let htmlU = `<tr><th>Nama</th><th>NIS / NIP / ID</th><th>Kelas</th><th>Role</th><th>Aksi</th></tr>`;
+    let htmlU = `<tr><th>Nama</th><th>NIS / NIP / ID</th><th>Kelas</th><th>Jenis Kelamin</th><th>Alamat</th><th>Role</th><th>Aksi</th></tr>`;
     users.forEach(u => {
         htmlU += `<tr>
             <td><strong>${u.nama}</strong></td>
             <td>${u.nomor_induk}</td>
             <td>${u.kelas}</td>
+            <td>${u.jenis_kelamin || '-'}</td>
+            <td>${u.alamat || '-'}</td>
             <td><span class="badge ${u.role === 'admin' ? 'ditolak' : (u.role === 'pelatih' ? 'pending' : 'diterima')}">${u.role.toUpperCase()}</span></td>
             <td>${u.id !== currentUser.id ? `<button type="button" class="btn btn-del" style="padding:4px 10px; font-size:12px;" onclick="adminHapusUser(${u.id})">Hapus</button>` : '<span class="text-muted" style="font-size:12px;">Akun Aktif</span>'}</td>
         </tr>`;
