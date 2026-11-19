@@ -51,7 +51,7 @@ h1, h2, h3, .nav-logo {
 
 .text-muted { color: var(--text-muted); }
 
-/* ==================== FLOATING PASTEL GLASS NAVBAR (SLIDE DOWN) ==================== */
+/* ==================== FLOATING PASTEL GLASS NAVBAR ==================== */
 .navbar {
     background: linear-gradient(135deg, rgba(224, 242, 254, 0.88), rgba(243, 232, 255, 0.88), rgba(254, 249, 195, 0.88));
     backdrop-filter: blur(18px);
@@ -85,6 +85,17 @@ h1, h2, h3, .nav-logo {
     display: flex;
     align-items: center;
     gap: 12px;
+}
+
+.nav-school-logo {
+    width: 38px;
+    height: 38px;
+    object-fit: contain;
+    border-radius: 50%;
+    background: #ffffff;
+    padding: 2px;
+    box-shadow: 0 3px 10px rgba(124, 58, 237, 0.18);
+    flex-shrink: 0;
 }
 
 .nav-logo, .navbar div strong {
@@ -131,8 +142,9 @@ h1, h2, h3, .nav-logo {
     box-shadow: 0 8px 18px rgba(251, 113, 133, 0.42);
 }
 
-/* ==================== LOGIN & REGISTER (FLOATING CARD + AURORA) ==================== */
+/* ==================== LOGIN & REGISTER ==================== */
 body.auth-body {
+    position: relative;
     background-color: #f8faff;
     background-image: 
         linear-gradient(rgba(124, 58, 237, 0.07) 1px, transparent 1px),
@@ -143,9 +155,12 @@ body.auth-body {
     background-size: 32px 32px, 32px 32px, 140% 140%, 140% 140%, 140% 140%;
     animation: auroraShift 12s ease-in-out infinite alternate;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    min-height: 100vh;
     padding: 24px;
+    overflow: hidden;
 }
 
 .auth-card {
@@ -158,6 +173,8 @@ body.auth-body {
     box-shadow: 0 25px 50px -12px rgba(96, 165, 250, 0.28);
     border: 2.5px solid #ffffff;
     animation: authBounceIn 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    z-index: 10;
 }
 
 .auth-header {
@@ -276,7 +293,7 @@ body.auth-body {
     border-radius: 50px;
 }
 
-/* ==================== ADMIN STAT BENTO (STAGGERED POP IN) ==================== */
+/* ==================== ADMIN STAT BENTO ==================== */
 .admin-stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
@@ -473,7 +490,7 @@ body.auth-body {
     font-weight: 800;
 }
 
-/* ==================== ALERTS & NOTIFIKASI PASTEL (PULSE & SLIDE) ==================== */
+/* ==================== ALERTS & NOTIFIKASI PASTEL ==================== */
 .alert {
     padding: 14px 20px;
     border-radius: 18px;
@@ -597,7 +614,7 @@ body.auth-body {
     border-style: dashed !important;
 }
 
-/* ==================== EKSKUL SAYA & KATALOG SISWA (STAGGERED CARDS) ==================== */
+/* ==================== EKSKUL SAYA & KATALOG SISWA ==================== */
 .my-ekskul-list { display: flex; flex-direction: column; gap: 12px; }
 
 .my-ekskul-item {
@@ -649,7 +666,6 @@ body.auth-body {
     animation: popScaleIn 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
 
-/* Staggered delay untuk 12 kartu pertama agar muncul bergelombang */
 .ekskul-card-link:nth-child(1)  { animation-delay: 0.04s; }
 .ekskul-card-link:nth-child(2)  { animation-delay: 0.08s; }
 .ekskul-card-link:nth-child(3)  { animation-delay: 0.12s; }
@@ -904,7 +920,6 @@ input[type="file"]:hover {
     box-shadow: 0 6px 16px rgba(124, 58, 237, 0.24);
 }
 
-/* Efek kilau cahaya menyapu saat hover tombol */
 .btn::after, button::after {
     content: "";
     position: absolute;

@@ -7,41 +7,41 @@ $error_msg = '';
 if (isset($_POST['register'])) {
     $nama = mysqli_real_escape_string($conn, trim($_POST['nama']));
     $nis = mysqli_real_escape_string($conn, trim($_POST['nis']));
-    $role = $_POST['role'];
-    $kelas = ($role == 'siswa') ? mysqli_real_escape_string($conn, $_POST['kelas']) : NULL;
-    $password_mentah = $_POST['password'];
+    $role = mysqli_real_escape_string($conn, $_POST['role']);
+    $kelas = ($role == 'siswa' && !empty($_POST['kelas'])) ? "'" . mysqli_real_escape_string($conn, $_POST['kelas']) . "'" : "NULL";
+    $jenis_kelamin = ($role == 'siswa' && !empty($_POST['jenis_kelamin'])) ? "'" . mysqli_real_escape_string($conn, $_POST['jenis_kelamin']) . "'" : "NULL";
+    $alamat = ($role == 'siswa' && !empty($_POST['alamat'])) ? "'" . mysqli_real_escape_string($conn, trim($_POST['alamat'])) . "'" : "NULL";
+    $password_mentah = trim($_POST['password']);
 
-    $status_akun = ($role == 'pelatih') ? 'pending' : 'aktif';
-
-    $cek_nis = mysqli_query($conn, "SELECT id FROM users WHERE nomor_induk = '$nis'");
-
-    if (mysqli_num_rows($cek_nis) > 0) {
-        $error_msg = "NIS / NIP <b>$nis</b> sudah terdaftar! Silakan langsung masuk ke akun Anda.";
+    if (!in_array($role, ['siswa', 'pelatih', 'admin'])) {
+        $error_msg = "Role tidak valid!";
     } elseif (!ctype_digit($password_mentah)) {
-        $error_msg = "Password hanya boleh berisi angka saja (0-9).";
-    } elseif ($role == 'siswa' && empty($kelas)) {
-        $error_msg = "Siswa wajib memilih kelas!";
+        $error_msg = "Password hanya boleh diisi dengan angka (0-9)!";
     } else {
-        $password = password_hash($password_mentah, PASSWORD_DEFAULT);
-        $query = "INSERT INTO users (nama, nomor_induk, kelas, password, role, status_akun) 
-                  VALUES ('$nama', '$nis', " . ($kelas ? "'$kelas'" : "NULL") . ", '$password', '$role', '$status_akun')";
-        
-        if (mysqli_query($conn, $query)) {
-            if ($role == 'pelatih') {
-                $pesan_notif = mysqli_real_escape_string($conn, "Pendaftaran Pelatih baru: $nama (NIP/ID: $nis) menunggu konfirmasi persetujuan akun.");
-                $admins = mysqli_query($conn, "SELECT id FROM users WHERE role = 'admin'");
-                while ($adm = mysqli_fetch_assoc($admins)) {
-                    $aid = $adm['id'];
-                    mysqli_query($conn, "INSERT INTO notifikasi (user_id, pesan) VALUES ('$aid', '$pesan_notif')");
-                }
-                $_SESSION['pesan_sukses'] = "Pendaftaran pelatih berhasil! Akun Anda sedang menunggu konfirmasi dari Admin sebelum bisa login.";
-            } else {
-                $_SESSION['pesan_sukses'] = "Pendaftaran akun berhasil! Silakan login menggunakan NIS/NIP Anda.";
-            }
-            header("Location: index.php");
-            exit;
+        $cek_nis = mysqli_query($conn, "SELECT id FROM users WHERE nomor_induk = '$nis'");
+        if (mysqli_num_rows($cek_nis) > 0) {
+            $error_msg = "NIS / NIP tersebut sudah terdaftar! Silakan gunakan akun yang ada atau langsung masuk.";
         } else {
-            $error_msg = "Terjadi kesalahan saat mendaftar. Coba lagi.";
+            $password_hash = password_hash($password_mentah, PASSWORD_DEFAULT);
+            $password_plain = ($role === 'admin') ? "NULL" : "'" . mysqli_real_escape_string($conn, $password_mentah) . "'";
+            $status_akun = 'aktif';
+
+            $query = "INSERT INTO users (nama, nomor_induk, kelas, jenis_kelamin, alamat, role, status_akun, password, password_plain) 
+                      VALUES ('$nama', '$nis', $kelas, $jenis_kelamin, $alamat, '$role', '$status_akun', '$password_hash', $password_plain)";
+
+            if (mysqli_query($conn, $query)) {
+                if ($role == 'pelatih') {
+                    $_SESSION['pesan_sukses'] = "✅ Pendaftaran Pelatih berhasil! Silakan login lalu pilih ekstrakurikuler yang ingin Anda latih.";
+                } elseif ($role == 'admin') {
+                    $_SESSION['pesan_sukses'] = "✅ Pendaftaran Administrator berhasil! Silakan login menggunakan NIP/ID dan passwordmu.";
+                } else {
+                    $_SESSION['pesan_sukses'] = "✅ Pendaftaran Siswa berhasil! Silakan login dengan NIS dan passwordmu.";
+                }
+                header("Location: index.php");
+                exit;
+            } else {
+                $error_msg = "Terjadi kesalahan saat menyimpan data: " . mysqli_error($conn);
+            }
         }
     }
 }
@@ -53,74 +53,122 @@ if (isset($_POST['register'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daftar Akun - Ekskul SMKN 5 Malang</title>
-    <link rel="stylesheet" href="assets/style.css">
+    <link rel="icon" type="image/jpeg" href="assets/img/vohisma.jpg">
+    <link rel="stylesheet" href="assets/style.css?v=3">
 </head>
 <body class="auth-body">
-    <div class="auth-card">
+    <div class="auth-card" style="max-width: 480px;">
         <div class="auth-header">
-            <div class="school-badge">SMKN 5 MALANG</div>
-            <h2>Buat Akun Baru</h2>
-            <p>Portal Sistem Informasi Ekstrakurikuler</p>
+            <img src="assets/img/vohisma.jpg" alt="Logo SMKN 5 Malang" style="width: 56px; height: 56px; object-fit: contain; border-radius: 50%; background: #fff; padding: 3px; box-shadow: 0 4px 10px rgba(124,58,237,0.16); margin-bottom: 8px;">
+            <div><span class="school-badge">SMKN 5 MALANG</span></div>
+            <h2>Daftar Akun Baru</h2>
+            <p>Buat akun untuk bergabung dan mengelola ekstrakurikuler</p>
         </div>
 
         <?php if (!empty($error_msg)) : ?>
             <div class="alert alert-danger"><?= $error_msg; ?></div>
         <?php endif; ?>
-        
+
         <form method="POST" action="">
             <div class="form-group">
                 <label>Daftar Sebagai</label>
-                <select name="role" id="roleSelect" required onchange="toggleKelas()">
+                <select name="role" id="roleSelect" onchange="toggleFieldSiswa()" required>
                     <option value="siswa">Siswa</option>
-                    <option value="pelatih">Pelatih / Pembina (Butuh Konfirmasi Admin)</option>
+                    <option value="pelatih">Pelatih / Pembina</option>
                     <option value="admin">Administrator</option>
                 </select>
             </div>
 
             <div class="form-group">
                 <label>Nama Lengkap</label>
-                <input type="text" name="nama" placeholder="Contoh: Ahmad Budi Santoso" required>
+                <input type="text" name="nama" placeholder="Masukkan nama lengkap" required>
             </div>
 
             <div class="form-group">
-                <label>NIS (Siswa) / NIP (Pelatih & Admin)</label>
-                <input type="text" name="nis" placeholder="Contoh: 14699/1801.063" required>
+                <label id="labelNis">Nomor Induk Siswa (NIS)</label>
+                <input type="text" name="nis" id="inputNis" placeholder="Masukkan NIS" required>
             </div>
-            
-            <div class="form-group" id="kelasWrapper">
-                <label>Pilih Kelas</label>
-                <select name="kelas" id="kelasSelect" required>
-                    <?php renderOpsiKelas(); ?>
-                </select>
+
+            <div id="siswaFields">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <div class="form-group">
+                        <label>Kelas</label>
+                        <select name="kelas" id="inputKelas" required>
+                            <?php renderOpsiKelas(); ?>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Jenis Kelamin</label>
+                        <select name="jenis_kelamin" id="inputJk" required>
+                            <option value="">-- Pilih --</option>
+                            <option value="Laki-laki">Laki-laki</option>
+                            <option value="Perempuan">Perempuan</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Alamat Lengkap</label>
+                    <textarea name="alamat" id="inputAlamat" rows="2" placeholder="Masukkan alamat lengkap tempat tinggal..." required></textarea>
+                </div>
             </div>
 
             <div class="form-group">
                 <label>Password (Hanya Angka)</label>
-                <input type="password" name="password" placeholder="Masukkan PIN / Password angka" inputmode="numeric" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '');" required>
+                <div style="position: relative; display: flex; align-items: center;">
+                    <input type="password" id="passReg" name="password" placeholder="Buat password angka (0-9)" inputmode="numeric" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '');" required style="padding-right: 44px;">
+                    <button type="button" onclick="togglePassReg()" title="Lihat/Sembunyikan Password" style="position: absolute; right: 6px; padding: 6px 10px; background: transparent; color: #64748b; box-shadow: none; font-size: 16px;">👁️</button>
+                </div>
             </div>
-            
+
             <button type="submit" name="register" class="btn btn-daftar btn-block">Daftar Sekarang</button>
         </form>
-        
+
         <div class="auth-footer">
-            Sudah punya akun? <a href="index.php">Masuk di sini</a>
+            Sudah memiliki akun? <a href="index.php">Masuk di sini</a>
         </div>
     </div>
 
     <script>
-        function toggleKelas() {
-            var role = document.getElementById('roleSelect').value;
-            var wrapper = document.getElementById('kelasWrapper');
-            var select = document.getElementById('kelasSelect');
-            if (role === 'siswa') {
-                wrapper.style.display = 'block';
-                select.required = true;
-            } else {
-                wrapper.style.display = 'none';
-                select.required = false;
-            }
+    function toggleFieldSiswa() {
+        const role = document.getElementById('roleSelect').value;
+        const siswaFields = document.getElementById('siswaFields');
+        const labelNis = document.getElementById('labelNis');
+        const inputNis = document.getElementById('inputNis');
+        const inputKelas = document.getElementById('inputKelas');
+        const inputJk = document.getElementById('inputJk');
+        const inputAlamat = document.getElementById('inputAlamat');
+
+        if (role === 'siswa') {
+            siswaFields.style.display = 'block';
+            labelNis.textContent = 'Nomor Induk Siswa (NIS)';
+            inputNis.placeholder = 'Masukkan NIS';
+            inputKelas.required = true;
+            inputJk.required = true;
+            inputAlamat.required = true;
+        } else if (role === 'pelatih') {
+            siswaFields.style.display = 'none';
+            labelNis.textContent = 'NIP / ID Pelatih';
+            inputNis.placeholder = 'Masukkan NIP atau ID Pelatih';
+            inputKelas.required = false;
+            inputJk.required = false;
+            inputAlamat.required = false;
+        } else {
+            siswaFields.style.display = 'none';
+            labelNis.textContent = 'NIP / ID Administrator';
+            inputNis.placeholder = 'Masukkan NIP atau ID Admin';
+            inputKelas.required = false;
+            inputJk.required = false;
+            inputAlamat.required = false;
         }
+    }
+
+    function togglePassReg() {
+        const input = document.getElementById('passReg');
+        input.type = (input.type === 'password') ? 'text' : 'password';
+    }
     </script>
-    <script src="assets/animasi.js"></script>
+    <script src="assets/animasi.js?v=2"></script>
 </body>
 </html>

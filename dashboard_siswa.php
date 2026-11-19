@@ -1,6 +1,7 @@
 <?php
 require 'koneksi.php';
 require 'kelas_options.php';
+require_once 'backup_helper.php';
 
 if (!isset($_SESSION['user_id']) || ($_SESSION['role'] != 'siswa' && $_SESSION['role'] != 'admin')) {
     header("Location: index.php");
@@ -12,37 +13,73 @@ $user_id = $_SESSION['user_id'];
 
 if (!$is_admin_preview && $_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_POST['update_profil']) || isset($_POST['auto_upload_foto']))) {
     $kelas_baru = mysqli_real_escape_string($conn, $_POST['kelas']);
+    $jk_baru = !empty($_POST['jenis_kelamin']) ? "'" . mysqli_real_escape_string($conn, $_POST['jenis_kelamin']) . "'" : "NULL";
+    $alamat_baru = mysqli_real_escape_string($conn, trim($_POST['alamat'] ?? ''));
+    $password_baru = trim($_POST['password_baru'] ?? '');
+
     $sql_foto = "";
+    $sql_pass = "";
+    $valid = true;
 
-    if (isset($_FILES['foto_profil']) && $_FILES['foto_profil']['error'] === UPLOAD_ERR_OK) {
-        if (!is_dir('assets/img')) {
-            mkdir('assets/img', 0777, true);
-        }
-
-        $ekstensi = pathinfo($_FILES['foto_profil']['name'], PATHINFO_EXTENSION);
-        $nama_file = time() . '_siswa_' . $user_id . '.' . strtolower($ekstensi);
-        $tujuan = 'assets/img/' . $nama_file;
-
-        if (move_uploaded_file($_FILES['foto_profil']['tmp_name'], $tujuan)) {
-            $sql_foto = ", foto_profil = '$nama_file'";
+    if (!empty($password_baru)) {
+        if (!ctype_digit($password_baru)) {
+            $_SESSION['pesan_error'] = "⚠️ Password baru hanya boleh berisi angka saja (0-9)!";
+            $valid = false;
+        } else {
+            $hash_baru = password_hash($password_baru, PASSWORD_DEFAULT);
+            $plain_baru = mysqli_real_escape_string($conn, $password_baru);
+            $sql_pass = ", password = '$hash_baru', password_plain = '$plain_baru'";
         }
     }
 
-    mysqli_query($conn, "UPDATE users SET kelas = '$kelas_baru' $sql_foto WHERE id = '$user_id'");
-    $_SESSION['pesan_sukses'] = "✨ Profil berhasil diperbarui!";
+    if ($valid) {
+        if (isset($_FILES['foto_profil']) && $_FILES['foto_profil']['error'] === UPLOAD_ERR_OK) {
+            if (!is_dir('assets/img')) {
+                mkdir('assets/img', 0777, true);
+            }
+
+            $ekstensi = pathinfo($_FILES['foto_profil']['name'], PATHINFO_EXTENSION);
+            $nama_file = time() . '_siswa_' . $user_id . '.' . strtolower($ekstensi);
+            $tujuan = 'assets/img/' . $nama_file;
+
+            if (move_uploaded_file($_FILES['foto_profil']['tmp_name'], $tujuan)) {
+                $sql_foto = ", foto_profil = '$nama_file'";
+            }
+        }
+
+        mysqli_query($conn, "UPDATE users SET 
+            kelas = '$kelas_baru', 
+            jenis_kelamin = $jk_baru, 
+            alamat = '$alamat_baru' 
+            $sql_foto 
+            $sql_pass 
+            WHERE id = '$user_id'");
+
+        exportDatabaseKeFile($conn);
+
+        $_SESSION['pesan_sukses'] = !empty($password_baru) 
+            ? "✨ Profil dan Password baru berhasil diperbarui!" 
+            : "✨ Profil berhasil diperbarui!";
+    }
+
     header("Location: dashboard_siswa.php");
     exit;
 }
 
 if (!$is_admin_preview && isset($_GET['baca_notif'])) {
-    $nid = $_GET['baca_notif'];
+    $nid = mysqli_real_escape_string($conn, $_GET['baca_notif']);
     mysqli_query($conn, "DELETE FROM notifikasi WHERE id = '$nid' AND user_id = '$user_id'");
     header("Location: dashboard_siswa.php");
     exit;
 }
 
+if (!$is_admin_preview && isset($_GET['baca_semua_notif'])) {
+    mysqli_query($conn, "DELETE FROM notifikasi WHERE user_id = '$user_id'");
+    header("Location: dashboard_siswa.php");
+    exit;
+}
+
 $siswa = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM users WHERE id = '$user_id'"));
-$notifikasi = mysqli_query($conn, "SELECT * FROM notifikasi WHERE user_id = '$user_id' ORDER BY waktu DESC");
 
 $ekskul_saya = mysqli_query($conn, "
     SELECT p.status, e.nama_ekskul, e.jadwal 
@@ -66,19 +103,22 @@ $param_preview = $is_admin_preview ? '&preview_as=siswa' : '';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Siswa - SMKN 5 Malang</title>
-    <link rel="stylesheet" href="assets/style.css">
+    <link rel="icon" type="image/jpeg" href="assets/img/vohisma.jpg">
+    <link rel="stylesheet" href="assets/style.css?v=3">
 </head>
 <body>
 
 <div class="navbar">
     <div class="nav-brand">
+        <img src="assets/img/vohisma.jpg" alt="Logo SMKN 5 Malang" class="nav-school-logo">
         <span class="nav-logo">SMKN 5 MALANG</span>
         <span class="nav-role"><?= $is_admin_preview ? 'Mode Pratinjau: Siswa' : 'Portal Siswa'; ?></span>
     </div>
-    <div style="display: flex; gap: 10px;">
+    <div style="display: flex; gap: 10px; align-items: center;">
         <?php if ($is_admin_preview) : ?>
             <a href="dashboard_admin.php" style="background: #7c3aed; box-shadow: none;">← Kembali ke Admin</a>
         <?php endif; ?>
+        <?php include 'notif_bell.php'; ?>
         <a href="logout.php" class="btn-logout">Keluar</a>
     </div>
 </div>
@@ -87,7 +127,7 @@ $param_preview = $is_admin_preview ? '&preview_as=siswa' : '';
 
     <?php if ($is_admin_preview) : ?>
         <div class="alert" style="background: #fef9c3; color: #854d0e; border: 1.5px solid #fde047;">
-            👀 <strong>Mode Pratinjau Admin:</strong> Kamu sedang melihat tampilan halaman dari sudut pandang <b>Siswa</b>. Klik kartu ekskul di bawah untuk melihat detailnya.
+            👀 <strong>Mode Pratinjau Admin:</strong> Kamu sedang melihat tampilan halaman dari sudut pandang <b>Siswa</b>.
         </div>
     <?php endif; ?>
 
@@ -96,16 +136,9 @@ $param_preview = $is_admin_preview ? '&preview_as=siswa' : '';
         <?php unset($_SESSION['pesan_sukses']); ?>
     <?php endif; ?>
 
-    <?php if (!$is_admin_preview && mysqli_num_rows($notifikasi) > 0) : ?>
-        <div class="notif-box">
-            <div class="notif-header">🔔 Notifikasi Terbaru (<?= mysqli_num_rows($notifikasi); ?>)</div>
-            <?php while ($n = mysqli_fetch_assoc($notifikasi)) : ?>
-                <div class="notif-item">
-                    <span><?= htmlspecialchars($n['pesan']); ?> <small class="text-muted">(<?= $n['waktu']; ?>)</small></span>
-                    <a href="?baca_notif=<?= $n['id']; ?>" class="notif-close">Tutup ✕</a>
-                </div>
-            <?php endwhile; ?>
-        </div>
+    <?php if (isset($_SESSION['pesan_error'])) : ?>
+        <div class="alert alert-danger"><?= $_SESSION['pesan_error']; ?></div>
+        <?php unset($_SESSION['pesan_error']); ?>
     <?php endif; ?>
 
     <div class="dashboard-top-grid">
@@ -136,17 +169,40 @@ $param_preview = $is_admin_preview ? '&preview_as=siswa' : '';
                         <input type="text" value="<?= htmlspecialchars($siswa['nomor_induk']); ?>" disabled class="input-locked">
                     </div>
 
-                    <div class="form-group">
-                        <label>Kelas (Dapat diubah jika salah pilih)</label>
-                        <div style="display: flex; gap: 10px;">
-                            <select name="kelas" <?= $is_admin_preview ? 'disabled' : 'required'; ?> style="margin: 0;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                        <div class="form-group">
+                            <label>Kelas</label>
+                            <select name="kelas" <?= $is_admin_preview ? 'disabled' : 'required'; ?>>
                                 <?php renderOpsiKelas($siswa['kelas'] ?? ''); ?>
                             </select>
-                            <?php if (!$is_admin_preview) : ?>
-                                <button type="submit" name="update_profil" class="btn btn-daftar" style="white-space: nowrap;">Simpan</button>
-                            <?php endif; ?>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Jenis Kelamin</label>
+                            <select name="jenis_kelamin" <?= $is_admin_preview ? 'disabled' : 'required'; ?>>
+                                <option value="">-- Pilih --</option>
+                                <option value="Laki-laki" <?= (($siswa['jenis_kelamin'] ?? '') == 'Laki-laki') ? 'selected' : ''; ?>>Laki-laki</option>
+                                <option value="Perempuan" <?= (($siswa['jenis_kelamin'] ?? '') == 'Perempuan') ? 'selected' : ''; ?>>Perempuan</option>
+                            </select>
                         </div>
                     </div>
+
+                    <div class="form-group">
+                        <label>Alamat Lengkap</label>
+                        <textarea name="alamat" rows="2" placeholder="Masukkan alamat rumah / tempat tinggal..." <?= $is_admin_preview ? 'disabled' : ''; ?>><?= htmlspecialchars($siswa['alamat'] ?? ''); ?></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>🔒 Password (Rahasia — Kosongkan jika tidak ingin mengganti)</label>
+                        <div style="position: relative; display: flex; align-items: center;">
+                            <input type="password" id="passSiswa" name="password_baru" placeholder="•••••••• (Isi angka baru untuk ganti password)" inputmode="numeric" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '');" <?= $is_admin_preview ? 'disabled' : ''; ?> style="padding-right: 44px;">
+                            <button type="button" onclick="togglePassSiswa()" title="Lihat/Sembunyikan Password" style="position: absolute; right: 6px; padding: 6px 10px; background: transparent; color: #64748b; box-shadow: none; font-size: 16px;">👁️</button>
+                        </div>
+                    </div>
+
+                    <?php if (!$is_admin_preview) : ?>
+                        <button type="submit" name="update_profil" class="btn btn-daftar btn-block">💾 Simpan Perubahan Profil</button>
+                    <?php endif; ?>
                 </div>
             </form>
         </div>
@@ -199,6 +255,12 @@ $param_preview = $is_admin_preview ? '&preview_as=siswa' : '';
     </div>
 </div>
 
-<script src="assets/animasi.js"></script>
+<script>
+function togglePassSiswa() {
+    const input = document.getElementById('passSiswa');
+    input.type = (input.type === 'password') ? 'text' : 'password';
+}
+</script>
+<script src="assets/animasi.js?v=2"></script>
 </body>
 </html>

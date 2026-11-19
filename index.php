@@ -26,22 +26,18 @@ if (isset($_POST['login'])) {
         if (mysqli_num_rows($result) === 1) {
             $row = mysqli_fetch_assoc($result);
             if (password_verify($password, $row['password'])) {
-                if ($row['role'] == 'pelatih' && $row['status_akun'] == 'pending') {
-                    $error = "⏳ Akun Pelatih Anda masih menunggu konfirmasi/persetujuan dari Admin.";
-                } else {
-                    $_SESSION['user_id'] = $row['id'];
-                    $_SESSION['nama'] = $row['nama'];
-                    $_SESSION['role'] = $row['role'];
+                $_SESSION['user_id'] = $row['id'];
+                $_SESSION['nama'] = $row['nama'];
+                $_SESSION['role'] = $row['role'];
 
-                    if ($row['role'] == 'admin') {
-                        header("Location: dashboard_admin.php");
-                    } elseif ($row['role'] == 'pelatih') {
-                        header("Location: dashboard_pelatih.php");
-                    } else {
-                        header("Location: dashboard_siswa.php");
-                    }
-                    exit;
+                if ($row['role'] == 'admin') {
+                    header("Location: dashboard_admin.php");
+                } elseif ($row['role'] == 'pelatih') {
+                    header("Location: dashboard_pelatih.php");
+                } else {
+                    header("Location: dashboard_siswa.php");
                 }
+                exit;
             } else {
                 $error = "Password yang Anda masukkan salah!";
             }
@@ -58,12 +54,14 @@ if (isset($_POST['login'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Ekskul SMKN 5 Malang</title>
-    <link rel="stylesheet" href="assets/style.css">
+    <link rel="icon" type="image/jpeg" href="assets/img/vohisma.jpg">
+    <link rel="stylesheet" href="assets/style.css?v=3">
 </head>
 <body class="auth-body">
     <div class="auth-card">
         <div class="auth-header">
-            <div class="school-badge">SMKN 5 MALANG</div>
+            <img src="assets/img/vohisma.jpg" alt="Logo SMKN 5 Malang" style="width: 64px; height: 64px; object-fit: contain; border-radius: 50%; background: #fff; padding: 4px; box-shadow: 0 4px 12px rgba(124,58,237,0.18); margin-bottom: 10px;">
+            <div><span class="school-badge">SMKN 5 MALANG</span></div>
             <h2>Portal Ekstrakurikuler</h2>
             <p>Gali Potensi, Kembangkan Bakat, Raih Prestasi</p>
         </div>
@@ -92,10 +90,13 @@ if (isset($_POST['login'])) {
         </form>
         
         <div class="auth-footer">
+            <div style="margin-bottom: 8px;">
+                <a href="lupa_password.php" style="font-size: 13px; color: #e11d48;">Lupa password? Reset di sini</a>
+            </div>
             Belum mempunyai akun? <a href="register.php">Daftar sekarang</a>
         </div>
     </div>
 
-    <script src="assets/animasi.js"></script>
+    <script src="assets/animasi.js?v=2"></script>
 </body>
-</html> 
+</html>

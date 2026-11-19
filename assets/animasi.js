@@ -1,11 +1,40 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // 1. Lingkaran Transparan Mengikuti Kursor (Smooth Follower)
     const cursorRing = document.createElement("div");
-    cursorRing.className = "cursor-follower-ring";
+    cursorRing.style.cssText = `
+        position: fixed !important;
+        top: 0px;
+        left: 0px;
+        width: 44px;
+        height: 44px;
+        margin-left: -22px;
+        margin-top: -22px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(167, 139, 250, 0.22) 0%, rgba(96, 165, 250, 0.14) 60%, rgba(250, 204, 21, 0.18) 100%);
+        border: 2px solid rgba(167, 139, 250, 0.65);
+        backdrop-filter: blur(2px);
+        box-shadow: 0 0 18px rgba(167, 139, 250, 0.30);
+        pointer-events: none;
+        z-index: 999999;
+        transition: width 0.2s ease, height 0.2s ease, margin 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+        opacity: 0;
+    `;
     document.body.appendChild(cursorRing);
 
     const cursorDot = document.createElement("div");
-    cursorDot.className = "cursor-follower-dot";
+    cursorDot.style.cssText = `
+        position: fixed !important;
+        top: 0px;
+        left: 0px;
+        width: 8px;
+        height: 8px;
+        margin-left: -4px;
+        margin-top: -4px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #2563eb, #7c3aed, #eab308);
+        pointer-events: none;
+        z-index: 1000000;
+        opacity: 0;
+    `;
     document.body.appendChild(cursorDot);
 
     let mouseX = window.innerWidth / 2;
@@ -14,87 +43,113 @@ document.addEventListener("DOMContentLoaded", () => {
     let ringY = mouseY;
     let lastBubbleTime = 0;
 
-    // Warna pastel biru, kuning, ungu untuk gelembung
     const pastelColors = [
-        "rgba(96, 165, 250, 0.55)",  // Biru Pastel
-        "rgba(250, 204, 21, 0.55)",  // Kuning Pastel
-        "rgba(167, 139, 250, 0.55)"  // Ungu Pastel
+        "rgba(96, 165, 250, 0.65)",
+        "rgba(250, 204, 21, 0.70)",
+        "rgba(167, 139, 250, 0.65)"
     ];
 
-    // Fungsi pembuat gelembung ("blubub")
     function createBubble(x, y, isClick = false) {
-        const bubble = document.createElement("span");
-        bubble.className = isClick ? "pastel-bubble click-pop" : "pastel-bubble trail-float";
-
-        const size = isClick ? Math.random() * 22 + 14 : Math.random() * 14 + 8;
+        const bubble = document.createElement("div");
+        const size = isClick ? Math.random() * 24 + 14 : Math.random() * 14 + 8;
         const color = pastelColors[Math.floor(Math.random() * pastelColors.length)];
 
-        bubble.style.width = `${size}px`;
-        bubble.style.height = `${size}px`;
-        bubble.style.left = `${x}px`;
-        bubble.style.top = `${y}px`;
-        bubble.style.background = `radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), ${color})`;
-        bubble.style.boxShadow = `0 0 10px ${color}`;
-
-        // Arah gerak acak untuk efek percikan gelembung
-        const driftX = (Math.random() - 0.5) * (isClick ? 120 : 45);
-        const driftY = isClick ? (Math.random() - 0.5) * 120 : -(Math.random() * 55 + 25);
-
-        bubble.style.setProperty("--dx", `${driftX}px`);
-        bubble.style.setProperty("--dy", `${driftY}px`);
-
+        bubble.style.cssText = `
+            position: fixed !important;
+            left: ${x}px;
+            top: ${y}px;
+            width: ${size}px;
+            height: ${size}px;
+            margin-left: ${-size / 2}px;
+            margin-top: ${-size / 2}px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.95), ${color});
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 0 10px ${color};
+            pointer-events: none;
+            z-index: 999998;
+        `;
         document.body.appendChild(bubble);
 
-        setTimeout(() => {
-            bubble.remove();
-        }, isClick ? 750 : 950);
+        const driftX = (Math.random() - 0.5) * (isClick ? 140 : 50);
+        const driftY = isClick ? (Math.random() - 0.5) * 140 : -(Math.random() * 65 + 30);
+
+        const anim = bubble.animate([
+            { transform: "translate(0px, 0px) scale(0.4)", opacity: 0.95 },
+            { transform: `translate(${driftX * 0.6}px, ${driftY * 0.6}px) scale(1.2)`, opacity: 0.8, offset: 0.55 },
+            { transform: `translate(${driftX}px, ${driftY}px) scale(0.1)`, opacity: 0 }
+        ], {
+            duration: isClick ? 750 : 950,
+            easing: "cubic-bezier(0.16, 1, 0.3, 1)",
+            fill: "forwards"
+        });
+
+        anim.onfinish = () => bubble.remove();
     }
 
-    // Event saat kursor bergerak
     document.addEventListener("mousemove", (e) => {
         mouseX = e.clientX;
         mouseY = e.clientY;
+        cursorRing.style.opacity = "1";
+        cursorDot.style.opacity = "1";
+        cursorDot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`;
 
-        cursorDot.style.transform = `translate(${mouseX}px, ${mouseY}px)`;
-
-        // Munculkan gelembung kecil secara berkala saat kursor digerakkan
         const now = Date.now();
-        if (now - lastBubbleTime > 65) {
+        if (now - lastBubbleTime > 55) {
             createBubble(mouseX, mouseY, false);
             lastBubbleTime = now;
         }
     });
 
-    // Membesar sedikit saat mengarah ke tombol / link / kartu
+    document.addEventListener("mouseleave", () => {
+        cursorRing.style.opacity = "0";
+        cursorDot.style.opacity = "0";
+    });
+
     document.addEventListener("mouseover", (e) => {
         if (e.target.closest("a, button, input, select, textarea, .ekskul-item, .stat-bento, label")) {
-            cursorRing.classList.add("cursor-hover");
+            cursorRing.style.width = "64px";
+            cursorRing.style.height = "64px";
+            cursorRing.style.marginLeft = "-32px";
+            cursorRing.style.marginTop = "-32px";
+            cursorRing.style.borderColor = "rgba(250, 204, 21, 0.9)";
+            cursorRing.style.background = "radial-gradient(circle, rgba(254, 240, 138, 0.35) 0%, rgba(167, 139, 250, 0.22) 100%)";
         }
     });
 
     document.addEventListener("mouseout", (e) => {
         if (e.target.closest("a, button, input, select, textarea, .ekskul-item, .stat-bento, label")) {
-            cursorRing.classList.remove("cursor-hover");
+            cursorRing.style.width = "44px";
+            cursorRing.style.height = "44px";
+            cursorRing.style.marginLeft = "-22px";
+            cursorRing.style.marginTop = "-22px";
+            cursorRing.style.borderColor = "rgba(167, 139, 250, 0.65)";
+            cursorRing.style.background = "radial-gradient(circle, rgba(167, 139, 250, 0.22) 0%, rgba(96, 165, 250, 0.14) 60%, rgba(250, 204, 21, 0.18) 100%)";
         }
     });
 
-    // Event saat mengklik sesuatu -> Muncul banyak gelembung ("blubub" meletup)
     document.addEventListener("mousedown", (e) => {
-        cursorRing.classList.add("cursor-click");
-        for (let i = 0; i < 9; i++) {
+        cursorRing.style.width = "30px";
+        cursorRing.style.height = "30px";
+        cursorRing.style.marginLeft = "-15px";
+        cursorRing.style.marginTop = "-15px";
+
+        for (let i = 0; i < 10; i++) {
             createBubble(e.clientX, e.clientY, true);
         }
     });
 
     document.addEventListener("mouseup", () => {
-        cursorRing.classList.remove("cursor-click");
+        cursorRing.style.width = "44px";
+        cursorRing.style.height = "44px";
+        cursorRing.style.marginLeft = "-22px";
+        cursorRing.style.marginTop = "-22px";
     });
 
-    // Animasi halus lingkaran mengikuti kursor (lerp)
     function animateCursor() {
         ringX += (mouseX - ringX) * 0.16;
         ringY += (mouseY - ringY) * 0.16;
-        cursorRing.style.transform = `translate(${ringX}px, ${ringY}px)`;
+        cursorRing.style.transform = `translate3d(${ringX}px, ${ringY}px, 0)`;
         requestAnimationFrame(animateCursor);
     }
     animateCursor();
